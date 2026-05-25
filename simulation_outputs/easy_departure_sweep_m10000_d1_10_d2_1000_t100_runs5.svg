@@ -1,0 +1,168 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="520" viewBox="0 0 1500 520">
+<style>
+text{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#17202a}.title{font-size:25px;font-weight:700}.subtitle{font-size:14px;fill:#52606d}.panel-title{font-size:16px;font-weight:700}.axis{stroke:#26323f;stroke-width:1}.grid{stroke:#e3e8ef;stroke-width:1}.tick{font-size:12px;fill:#667080}.legend{font-size:13px;fill:#17202a}
+</style>
+<text x="82" y="42" class="title">Policy performance as E departure rate increases</text>
+<text x="82" y="68" class="subtitle">final perished / (mT), m=10000, T=100, d1=10, d2=1000, 5 runs; H departure rate = 1</text>
+<line x1="1012" y1="38" x2="1040" y2="38" stroke="#1f77b4" stroke-width="3"/>
+<text x="1048" y="42" class="legend">Greedy</text>
+<line x1="1182" y1="38" x2="1210" y2="38" stroke="#d62728" stroke-width="3"/>
+<text x="1218" y="42" class="legend">Patient</text>
+<line x1="1012" y1="62" x2="1040" y2="62" stroke="#2ca02c" stroke-width="3"/>
+<text x="1048" y="66" class="legend">TA-Greedy</text>
+<line x1="1182" y1="62" x2="1210" y2="62" stroke="#9467bd" stroke-width="3"/>
+<text x="1218" y="66" class="legend">TA-Patient</text>
+<text x="82" y="102" class="panel-title">Total perishing</text>
+<line x1="82" y1="380" x2="472" y2="380" class="axis"/>
+<line x1="82" y1="130" x2="82" y2="380" class="axis"/>
+<text x="24" y="255.0" transform="rotate(-90 24 255.0)" text-anchor="middle" class="subtitle">Total perished / (mT)</text>
+<line x1="82" y1="317.5" x2="472" y2="317.5" class="grid"/>
+<text x="70" y="321.5" text-anchor="end" class="tick">0.12</text>
+<line x1="82" y1="255.0" x2="472" y2="255.0" class="grid"/>
+<text x="70" y="259.0" text-anchor="end" class="tick">0.25</text>
+<line x1="82" y1="192.5" x2="472" y2="192.5" class="grid"/>
+<text x="70" y="196.5" text-anchor="end" class="tick">0.38</text>
+<line x1="82" y1="130.0" x2="472" y2="130.0" class="grid"/>
+<text x="70" y="134.0" text-anchor="end" class="tick">0.50</text>
+<line x1="82.0" y1="380" x2="82.0" y2="385" class="axis"/>
+<text x="82.0" y="402" text-anchor="middle" class="tick">1</text>
+<line x1="172.23750313230607" y1="380" x2="172.23750313230607" y2="385" class="axis"/>
+<text x="172.23750313230607" y="402" text-anchor="middle" class="tick">2</text>
+<line x1="291.52499373538785" y1="380" x2="291.52499373538785" y2="385" class="axis"/>
+<text x="291.52499373538785" y="402" text-anchor="middle" class="tick">5</text>
+<line x1="381.762496867694" y1="380" x2="381.762496867694" y2="385" class="axis"/>
+<text x="381.762496867694" y="402" text-anchor="middle" class="tick">10</text>
+<line x1="471.99999999999994" y1="380" x2="471.99999999999994" y2="385" class="axis"/>
+<text x="471.99999999999994" y="402" text-anchor="middle" class="tick">20</text>
+<text x="277.0" y="428" text-anchor="middle" class="subtitle">E departure rate (log scale)</text>
+<polygon points="82.00,271.42 172.24,271.10 291.52,269.96 381.76,268.37 472.00,265.05 472.00,265.97 381.76,269.05 291.52,270.51 172.24,271.34 82.00,271.91" fill="#1f77b4" opacity="0.22"/>
+<polyline points="82.00,271.66 172.24,271.22 291.52,270.23 381.76,268.71 472.00,265.51" fill="none" stroke="#1f77b4" stroke-width="2.4"/>
+<circle cx="82.0" cy="271.663" r="3.5" fill="#1f77b4"/>
+<circle cx="172.23750313230607" cy="271.2217" r="3.5" fill="#1f77b4"/>
+<circle cx="291.52499373538785" cy="270.2321" r="3.5" fill="#1f77b4"/>
+<circle cx="381.762496867694" cy="268.7093" r="3.5" fill="#1f77b4"/>
+<circle cx="471.99999999999994" cy="265.5124" r="3.5" fill="#1f77b4"/>
+<polygon points="82.00,253.37 172.24,221.02 291.52,188.62 381.76,176.93 472.00,178.51 472.00,179.25 381.76,178.09 291.52,189.35 172.24,221.72 82.00,254.07" fill="#d62728" opacity="0.22"/>
+<polyline points="82.00,253.72 172.24,221.37 291.52,188.98 381.76,177.51 472.00,178.88" fill="none" stroke="#d62728" stroke-width="2.4"/>
+<circle cx="82.0" cy="253.7235" r="3.5" fill="#d62728"/>
+<circle cx="172.23750313230607" cy="221.3708" r="3.5" fill="#d62728"/>
+<circle cx="291.52499373538785" cy="188.9837" r="3.5" fill="#d62728"/>
+<circle cx="381.762496867694" cy="177.50789999999998" r="3.5" fill="#d62728"/>
+<circle cx="471.99999999999994" cy="178.881" r="3.5" fill="#d62728"/>
+<polygon points="82.00,284.30 172.24,283.92 291.52,281.84 381.76,279.17 472.00,273.72 472.00,273.99 381.76,279.61 291.52,282.49 172.24,284.36 82.00,284.97" fill="#2ca02c" opacity="0.22"/>
+<polyline points="82.00,284.63 172.24,284.14 291.52,282.17 381.76,279.39 472.00,273.86" fill="none" stroke="#2ca02c" stroke-width="2.4"/>
+<circle cx="82.0" cy="284.6333" r="3.5" fill="#2ca02c"/>
+<circle cx="172.23750313230607" cy="284.1386" r="3.5" fill="#2ca02c"/>
+<circle cx="291.52499373538785" cy="282.1655" r="3.5" fill="#2ca02c"/>
+<circle cx="381.762496867694" cy="279.3907" r="3.5" fill="#2ca02c"/>
+<circle cx="471.99999999999994" cy="273.8562" r="3.5" fill="#2ca02c"/>
+<polygon points="82.00,331.37 172.24,310.80 291.52,288.15 381.76,276.58 472.00,270.35 472.00,270.58 381.76,277.09 291.52,288.45 172.24,311.38 82.00,331.79" fill="#9467bd" opacity="0.22"/>
+<polyline points="82.00,331.58 172.24,311.09 291.52,288.30 381.76,276.83 472.00,270.46" fill="none" stroke="#9467bd" stroke-width="2.4"/>
+<circle cx="82.0" cy="331.579" r="3.5" fill="#9467bd"/>
+<circle cx="172.23750313230607" cy="311.0865" r="3.5" fill="#9467bd"/>
+<circle cx="291.52499373538785" cy="288.3014" r="3.5" fill="#9467bd"/>
+<circle cx="381.762496867694" cy="276.8349" r="3.5" fill="#9467bd"/>
+<circle cx="471.99999999999994" cy="270.4634" r="3.5" fill="#9467bd"/>
+<text x="544" y="102" class="panel-title">Hard-to-match H perishing</text>
+<line x1="544" y1="380" x2="934" y2="380" class="axis"/>
+<line x1="544" y1="130" x2="544" y2="380" class="axis"/>
+<text x="486" y="255.0" transform="rotate(-90 486 255.0)" text-anchor="middle" class="subtitle">H perished / (mT)</text>
+<line x1="544" y1="317.5" x2="934" y2="317.5" class="grid"/>
+<text x="532" y="321.5" text-anchor="end" class="tick">0.12</text>
+<line x1="544" y1="255.0" x2="934" y2="255.0" class="grid"/>
+<text x="532" y="259.0" text-anchor="end" class="tick">0.25</text>
+<line x1="544" y1="192.5" x2="934" y2="192.5" class="grid"/>
+<text x="532" y="196.5" text-anchor="end" class="tick">0.38</text>
+<line x1="544" y1="130.0" x2="934" y2="130.0" class="grid"/>
+<text x="532" y="134.0" text-anchor="end" class="tick">0.50</text>
+<line x1="544.0" y1="380" x2="544.0" y2="385" class="axis"/>
+<text x="544.0" y="402" text-anchor="middle" class="tick">1</text>
+<line x1="634.2375031323061" y1="380" x2="634.2375031323061" y2="385" class="axis"/>
+<text x="634.2375031323061" y="402" text-anchor="middle" class="tick">2</text>
+<line x1="753.5249937353879" y1="380" x2="753.5249937353879" y2="385" class="axis"/>
+<text x="753.5249937353879" y="402" text-anchor="middle" class="tick">5</text>
+<line x1="843.7624968676939" y1="380" x2="843.7624968676939" y2="385" class="axis"/>
+<text x="843.7624968676939" y="402" text-anchor="middle" class="tick">10</text>
+<line x1="934.0" y1="380" x2="934.0" y2="385" class="axis"/>
+<text x="934.0" y="402" text-anchor="middle" class="tick">20</text>
+<text x="739.0" y="428" text-anchor="middle" class="subtitle">E departure rate (log scale)</text>
+<polygon points="544.00,271.84 634.24,271.90 753.52,272.00 843.76,272.38 934.00,272.63 934.00,273.60 843.76,273.03 753.52,272.56 634.24,272.18 544.00,272.33" fill="#1f77b4" opacity="0.22"/>
+<polyline points="544.00,272.09 634.24,272.04 753.52,272.28 843.76,272.70 934.00,273.11" fill="none" stroke="#1f77b4" stroke-width="2.4"/>
+<circle cx="544.0" cy="272.0869" r="3.5" fill="#1f77b4"/>
+<circle cx="634.2375031323061" cy="272.043" r="3.5" fill="#1f77b4"/>
+<circle cx="753.5249937353879" cy="272.2783" r="3.5" fill="#1f77b4"/>
+<circle cx="843.7624968676939" cy="272.7045" r="3.5" fill="#1f77b4"/>
+<circle cx="934.0" cy="273.1128" r="3.5" fill="#1f77b4"/>
+<polygon points="544.00,253.37 634.24,221.02 753.52,188.62 843.76,176.93 934.00,178.53 934.00,179.27 843.76,178.09 753.52,189.35 634.24,221.72 544.00,254.07" fill="#d62728" opacity="0.22"/>
+<polyline points="544.00,253.72 634.24,221.37 753.52,188.98 843.76,177.51 934.00,178.90" fill="none" stroke="#d62728" stroke-width="2.4"/>
+<circle cx="544.0" cy="253.7235" r="3.5" fill="#d62728"/>
+<circle cx="634.2375031323061" cy="221.3708" r="3.5" fill="#d62728"/>
+<circle cx="753.5249937353879" cy="188.984" r="3.5" fill="#d62728"/>
+<circle cx="843.7624968676939" cy="177.50799999999998" r="3.5" fill="#d62728"/>
+<circle cx="934.0" cy="178.9015" r="3.5" fill="#d62728"/>
+<polygon points="544.00,284.96 634.24,285.24 753.52,285.06 843.76,285.33 934.00,285.04 934.00,285.28 843.76,285.75 753.52,285.68 634.24,285.68 544.00,285.64" fill="#2ca02c" opacity="0.22"/>
+<polyline points="544.00,285.30 634.24,285.46 753.52,285.37 843.76,285.54 934.00,285.16" fill="none" stroke="#2ca02c" stroke-width="2.4"/>
+<circle cx="544.0" cy="285.2991" r="3.5" fill="#2ca02c"/>
+<circle cx="634.2375031323061" cy="285.4563" r="3.5" fill="#2ca02c"/>
+<circle cx="753.5249937353879" cy="285.369" r="3.5" fill="#2ca02c"/>
+<circle cx="843.7624968676939" cy="285.5391" r="3.5" fill="#2ca02c"/>
+<circle cx="934.0" cy="285.1597" r="3.5" fill="#2ca02c"/>
+<polygon points="544.00,331.37 634.24,310.80 753.52,288.15 843.76,276.58 934.00,270.36 934.00,270.59 843.76,277.09 753.52,288.45 634.24,311.38 544.00,331.79" fill="#9467bd" opacity="0.22"/>
+<polyline points="544.00,331.58 634.24,311.09 753.52,288.30 843.76,276.84 934.00,270.47" fill="none" stroke="#9467bd" stroke-width="2.4"/>
+<circle cx="544.0" cy="331.5791" r="3.5" fill="#9467bd"/>
+<circle cx="634.2375031323061" cy="311.0865" r="3.5" fill="#9467bd"/>
+<circle cx="753.5249937353879" cy="288.30150000000003" r="3.5" fill="#9467bd"/>
+<circle cx="843.7624968676939" cy="276.8353" r="3.5" fill="#9467bd"/>
+<circle cx="934.0" cy="270.4724" r="3.5" fill="#9467bd"/>
+<text x="1006" y="102" class="panel-title">Easy-to-match E perishing</text>
+<line x1="1006" y1="380" x2="1396" y2="380" class="axis"/>
+<line x1="1006" y1="130" x2="1006" y2="380" class="axis"/>
+<text x="948" y="255.0" transform="rotate(-90 948 255.0)" text-anchor="middle" class="subtitle">E perished / (mT)</text>
+<line x1="1006" y1="317.5" x2="1396" y2="317.5" class="grid"/>
+<text x="994" y="321.5" text-anchor="end" class="tick">0.01</text>
+<line x1="1006" y1="255.0" x2="1396" y2="255.0" class="grid"/>
+<text x="994" y="259.0" text-anchor="end" class="tick">0.03</text>
+<line x1="1006" y1="192.5" x2="1396" y2="192.5" class="grid"/>
+<text x="994" y="196.5" text-anchor="end" class="tick">0.04</text>
+<line x1="1006" y1="130.0" x2="1396" y2="130.0" class="grid"/>
+<text x="994" y="134.0" text-anchor="end" class="tick">0.05</text>
+<line x1="1006.0" y1="380" x2="1006.0" y2="385" class="axis"/>
+<text x="1006.0" y="402" text-anchor="middle" class="tick">1</text>
+<line x1="1096.237503132306" y1="380" x2="1096.237503132306" y2="385" class="axis"/>
+<text x="1096.237503132306" y="402" text-anchor="middle" class="tick">2</text>
+<line x1="1215.5249937353879" y1="380" x2="1215.5249937353879" y2="385" class="axis"/>
+<text x="1215.5249937353879" y="402" text-anchor="middle" class="tick">5</text>
+<line x1="1305.762496867694" y1="380" x2="1305.762496867694" y2="385" class="axis"/>
+<text x="1305.762496867694" y="402" text-anchor="middle" class="tick">10</text>
+<line x1="1396.0" y1="380" x2="1396.0" y2="385" class="axis"/>
+<text x="1396.0" y="402" text-anchor="middle" class="tick">20</text>
+<text x="1201.0" y="428" text-anchor="middle" class="subtitle">E departure rate (log scale)</text>
+<polygon points="1006.00,375.61 1096.24,371.51 1215.52,359.39 1305.76,339.62 1396.00,303.35 1396.00,304.64 1305.76,340.47 1215.52,359.68 1096.24,372.06 1006.00,375.91" fill="#1f77b4" opacity="0.22"/>
+<polyline points="1006.00,375.76 1096.24,371.79 1215.52,359.54 1305.76,340.05 1396.00,304.00" fill="none" stroke="#1f77b4" stroke-width="2.4"/>
+<circle cx="1006.0" cy="375.761" r="3.5" fill="#1f77b4"/>
+<circle cx="1096.237503132306" cy="371.787" r="3.5" fill="#1f77b4"/>
+<circle cx="1215.5249937353879" cy="359.538" r="3.5" fill="#1f77b4"/>
+<circle cx="1305.762496867694" cy="340.048" r="3.5" fill="#1f77b4"/>
+<circle cx="1396.0" cy="303.996" r="3.5" fill="#1f77b4"/>
+<polygon points="1006.00,380.00 1096.24,380.00 1215.52,379.99 1305.76,380.00 1396.00,379.78 1396.00,379.81 1305.76,380.00 1215.52,380.00 1096.24,380.00 1006.00,380.00" fill="#d62728" opacity="0.22"/>
+<polyline points="1006.00,380.00 1096.24,380.00 1215.52,380.00 1305.76,380.00 1396.00,379.80" fill="none" stroke="#d62728" stroke-width="2.4"/>
+<circle cx="1006.0" cy="380.0" r="3.5" fill="#d62728"/>
+<circle cx="1096.237503132306" cy="380.0" r="3.5" fill="#d62728"/>
+<circle cx="1215.5249937353879" cy="379.997" r="3.5" fill="#d62728"/>
+<circle cx="1305.762496867694" cy="379.999" r="3.5" fill="#d62728"/>
+<circle cx="1396.0" cy="379.795" r="3.5" fill="#d62728"/>
+<polygon points="1006.00,373.29 1096.24,366.60 1215.52,347.60 1305.76,318.02 1396.00,266.11 1396.00,267.82 1305.76,319.01 1215.52,348.33 1096.24,367.04 1006.00,373.39" fill="#2ca02c" opacity="0.22"/>
+<polyline points="1006.00,373.34 1096.24,366.82 1215.52,347.97 1305.76,318.52 1396.00,266.97" fill="none" stroke="#2ca02c" stroke-width="2.4"/>
+<circle cx="1006.0" cy="373.342" r="3.5" fill="#2ca02c"/>
+<circle cx="1096.237503132306" cy="366.823" r="3.5" fill="#2ca02c"/>
+<circle cx="1215.5249937353879" cy="347.96500000000003" r="3.5" fill="#2ca02c"/>
+<circle cx="1305.762496867694" cy="318.516" r="3.5" fill="#2ca02c"/>
+<circle cx="1396.0" cy="266.96500000000003" r="3.5" fill="#2ca02c"/>
+<polygon points="1006.00,380.00 1096.24,380.00 1215.52,380.00 1305.76,379.99 1396.00,379.89 1396.00,379.93 1305.76,380.00 1215.52,380.00 1096.24,380.00 1006.00,380.00" fill="#9467bd" opacity="0.22"/>
+<polyline points="1006.00,380.00 1096.24,380.00 1215.52,380.00 1305.76,380.00 1396.00,379.91" fill="none" stroke="#9467bd" stroke-width="2.4"/>
+<circle cx="1006.0" cy="379.999" r="3.5" fill="#9467bd"/>
+<circle cx="1096.237503132306" cy="380.0" r="3.5" fill="#9467bd"/>
+<circle cx="1215.5249937353879" cy="379.999" r="3.5" fill="#9467bd"/>
+<circle cx="1305.762496867694" cy="379.996" r="3.5" fill="#9467bd"/>
+<circle cx="1396.0" cy="379.91" r="3.5" fill="#9467bd"/>
+</svg>

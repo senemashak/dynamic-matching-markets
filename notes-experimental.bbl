@@ -1,0 +1,35 @@
+\begin{thebibliography}{1}
+
+\bibitem{akbarpour}
+Mohammad Akbarpour, Shengwu Li, and Shayan Oveis~Gharan.
+\newblock Thickness and information in dynamic matching markets.
+\newblock {\em Journal of Political Economy}, 128(3):783--815, 2020.
+
+\bibitem{ashlagi2023matching}
+Itai Ashlagi, Afshin Nikzad, and Philipp Strack.
+\newblock Matching in dynamic imbalanced markets.
+\newblock {\em Review of Economic Studies}, 90(3):1084--1124, 2023.
+
+\bibitem{ethier_kurtz}
+Stewart~N. Ethier and Thomas~G. Kurtz.
+\newblock {\em Markov Processes: Characterization and Convergence}.
+\newblock Wiley, New York, 1986.
+
+\bibitem{kulpa1997pm}
+W{\l}adys{\l}aw Kulpa.
+\newblock The {P}oincar\'e--{M}iranda theorem.
+\newblock {\em The American Mathematical Monthly}, 104(6):545--550, 1997.
+
+\bibitem{Liu2019TheEO}
+Tracy~Xiao Liu, Zhixi Wan, and Chenyu Yang.
+\newblock The efficiency of a dynamic decentralized two-sided matching market.
+\newblock {\em SSRN Working Paper}, 2019.
+\newblock Available at SSRN: \url{https://ssrn.com/abstract=3339394}.
+
+\bibitem{meyn1993stability}
+Sean~P. Meyn and Richard~L. Tweedie.
+\newblock Stability of {M}arkovian processes {III}: {F}oster--{L}yapunov
+  criteria for continuous-time processes.
+\newblock {\em Advances in Applied Probability}, 25(3):518--548, 1993.
+
+\end{thebibliography}
