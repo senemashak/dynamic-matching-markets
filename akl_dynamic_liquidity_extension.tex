@@ -1,0 +1,264 @@
+\documentclass{article}
+
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\setlist[itemize]{topsep=4pt,itemsep=2pt,leftmargin=*}
+\setlist[enumerate]{topsep=4pt,itemsep=2pt,leftmargin=*}
+
+\newtheorem{definition}{Definition}
+\newtheorem{assumption}{Assumption}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remark}
+\newtheorem{corollary}{Corollary}
+
+\newcommand{\EE}{\mathbb{E}}
+\newcommand{\PP}{\mathbb{P}}
+
+\title{A Dynamic Sparse Analogue of the AKL Imbalance Logic}
+\author{Extension Note}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{AKL logic and the dynamic sparse interpretation}
+
+In static random matching with short-side/long-side imbalance, a tiny excess on one side can sharply shrink the core and strongly improve outcomes for the short side. The dynamic sparse analogue studied here is:
+\begin{quote}
+small increases in persistent easy-type liquidity can generate large reductions in hard-type perishing.
+\end{quote}
+
+In this note, the AKL-style ``imbalance'' object is not a static count gap but a dynamic liquidity stock controlled by entry and exit of easy-to-match agents.
+
+\section{Baseline dynamic sparse market}
+
+We keep the two-type structure in \texttt{notes-experimental.tex}. Let types be \(H\) (hard) and \(E\) (easy), with pool state \((H_t,E_t)\in\mathbb{Z}_{\ge 0}^2\).
+
+\subsection{Arrival and compatibility}
+
+Arrivals are Poisson with rates
+\[
+\lambda_H^{\mathrm{arr}}=(1-\lambda_{\mathrm{ent}})m,\qquad
+\lambda_{\mathrm{ent}}m\ \text{for E arrivals},\qquad
+\lambda_{\mathrm{ent}}\in(0,1),
+\]
+so total inflow remains \(m\). Equivalently, \(\lambda_{\mathrm{ent}}\) is the \emph{easy-share of total inflow}: if \(\lambda_{\mathrm{ent}}\) rises, H inflow mechanically falls through \(1-\lambda_{\mathrm{ent}}\). Compatibility is sparse:
+\[
+p_{HH}\approx 0,\qquad
+p_{HE}=\frac{d_1}{2m},\qquad
+p_{EE}=\frac{d_2}{2m},\qquad d_2\gg d_1>0.
+\]
+
+\subsection{Outside options and easy departure}
+
+Easy agents face outside-option pressure represented by criticality parameter \(\rho\). In reduced form, a baseline criticality model uses
+\[
+\text{E criticality intensity at time }t = \rho\,E_t.
+\]
+More generally, \(\rho\) may be endogenous (credits, tenure, platform commitment), but this note starts with the reduced-form object.
+
+\subsection{Liquidity parameter}
+
+Define the effective easy-liquidity scale
+\[
+\Lambda_E \equiv \frac{\lambda_{\mathrm{ent}}m}{\rho}.
+\]
+At stationarity in a birth-death approximation, \(\Lambda_E\) is proportional to the expected stock of easy agents and therefore to dynamic market thickness.
+
+\section{What replaces core shrinkage}
+
+The static object ``core size'' is replaced by dynamic connectivity and rescue opportunity objects:
+\begin{itemize}
+  \item probability an \(H\)-agent has a rescue path before departure,
+  \item stationary hard perishing rate \(L_H\),
+  \item stationary total loss \(L\),
+  \item expected waiting-time tails for hard types.
+\end{itemize}
+
+The AKL-style ``collapse'' event becomes:
+\[
+\text{small increase in }\Lambda_E \Rightarrow \text{large drop in }L_H.
+\]
+
+\section{Mechanism: augmenting-path emergence under sparse compatibility}
+
+With \(p_{HH}\approx 0\), hard agents are effectively rescued through \(E\)-mediated opportunities. Let \(\mathcal{R}_H(E_t)\) denote the event that a hard agent has a feasible rescue path before departure. A reduced-form approximation is
+\[
+\PP(\mathcal{R}_H(E_t)\mid E_t=e)\approx 1-\exp(-c(d_1,d_2)\,e),
+\]
+for \(c(d_1,d_2)>0\), capturing sparse random-graph connectivity/percolation effects.
+
+Hence, near the critical region where \(cE_t\) is moderate, marginal increases in \(E_t\) have large welfare effects.
+
+\section{Conceptual theorem template}
+
+\begin{assumption}[Sparse rescue dependence]
+\label{ass:sparse}
+\(p_{HH}\) is negligible relative to \(p_{HE}\), and hard rescue primarily relies on \(E\)-mediated paths.
+\end{assumption}
+
+\begin{assumption}[Stationary concentration]
+\label{ass:stationary}
+Under a local policy (e.g., TA-Patient), the CTMC admits a stationary distribution concentrated around a deterministic mean-field point.
+\end{assumption}
+
+\begin{theorem}[Dynamic sparse imbalance theorem, conceptual form]
+\label{thm:conceptual}
+Under Assumptions~\ref{ass:sparse}--\ref{ass:stationary}, there exists a critical liquidity level \(\Lambda^\star\) such that:
+\begin{enumerate}
+  \item If \(\Lambda_E>\Lambda^\star\), the stationary hard perishing rate \(L_H\) is small (and can vanish in an asymptotic regime).
+  \item If \(\Lambda_E<\Lambda^\star\), \(L_H\) is bounded away from zero.
+\end{enumerate}
+Moreover, near \(\Lambda^\star\), small changes in \(\Lambda_E\) induce first-order changes in welfare.
+\end{theorem}
+
+\begin{remark}
+This is the dynamic sparse analogue of ``a tiny static imbalance has large market effects.'' Here the tiny asymmetry is persistent easy liquidity, not a one-shot side-size difference.
+\end{remark}
+
+\section{Policy comparison implication}
+
+Let \(L^{\mathrm{TAG}}(\Lambda_E)\) and \(L^{\mathrm{TAP}}(\Lambda_E)\) be stationary losses of TA-Greedy and TA-Patient. Define
+\[
+\Delta_{\mathrm{TAP}\!-\!\mathrm{TAG}}(\Lambda_E,\lambda_{\mathrm{ent}})
+\equiv L^{\mathrm{TAG}}-L^{\mathrm{TAP}}.
+\]
+Then \(\Delta>0\) means TA-Patient dominates.
+
+A policy-threshold statement consistent with the theorem template is:
+\[
+\Delta_{\mathrm{TAP}\!-\!\mathrm{TAG}}>0
+\quad\Longleftrightarrow\quad
+\Lambda_E>\Lambda^\star(\lambda_{\mathrm{ent}},d_1,d_2).
+\]
+Hence the TA-Patient advantage is expected to be regime-dependent in both outside-option pressure (\(\rho\)) and easy inflow composition (\(\lambda_{\mathrm{ent}}\)).
+
+\section{Rigorous theorem stack: what is provable now vs. still missing}
+
+This section separates a \emph{rigorous reduced-form theorem path} from the full conjectural AKL analogue. The goal is to make proof dependencies explicit.
+
+\subsection{Assumption stack for a rigorous reduced-form theorem}
+
+\begin{assumption}[A1: Entry composition]
+\[
+\lambda_H^{\mathrm{arr}}=(1-\lambda_{\mathrm{ent}})m,\qquad
+\lambda_{\mathrm{ent}}m\ \text{for E arrivals},\qquad
+\lambda_{\mathrm{ent}}\in(0,1).
+\]
+\end{assumption}
+
+\begin{assumption}[A2: Sparse rescue geometry]
+\(p_{HH}\) is negligible, and hard rescue occurs through \(E\)-mediated paths.
+\end{assumption}
+
+\begin{assumption}[A3: Stationary concentration]
+The stationary law of the finite-\(m\) CTMC concentrates around a deterministic mean-field point as \(m\to\infty\).
+\end{assumption}
+
+\begin{assumption}[A4: Rescue monotonicity in easy stock]
+There exist constants \(0<c_1\le c_2\) such that
+\[
+1-e^{-c_1 e}\ \le\ \PP(\mathcal R_H\mid E_t=e)\ \le\ 1-e^{-c_2 e}.
+\]
+\end{assumption}
+
+\begin{assumption}[A5: Liquidity-stock monotonicity]
+The stationary easy stock is increasing in \(\Lambda_E=\lambda_{\mathrm{ent}}m/\rho\).
+\end{assumption}
+
+\begin{assumption}[A6: Loss representation]
+Stationary hard loss can be represented as a monotone transform of rescue failure:
+\[
+L_H \asymp \EE\!\left[1-\PP(\mathcal R_H\mid E_t)\right].
+\]
+\end{assumption}
+
+\subsection{Theorem sequence}
+
+\begin{proposition}[P1: Liquidity monotonicity]
+Under A1, A3, and A5, increasing \(\lambda_{\mathrm{ent}}\) (holding \(m,\rho\) fixed) increases \(\Lambda_E\), while increasing \(\rho\) (holding \(\lambda_{\mathrm{ent}},m\) fixed) decreases \(\Lambda_E\).
+\end{proposition}
+
+\begin{proposition}[P2: Rescue amplification]
+Under A2 and A4, rescue probability is a steep increasing function of easy stock in the moderate-connectivity region \(cE_t=O(1)\), implying nonlinear welfare gains from marginal liquidity.
+\end{proposition}
+
+\begin{proposition}[P3: Hard-loss monotonicity in \(\Lambda_E\)]
+Under A1--A6, \(L_H\) is decreasing in \(\Lambda_E\), with strongest local sensitivity near a critical region.
+\end{proposition}
+
+\begin{theorem}[T1: Reduced-form dynamic sparse imbalance theorem]
+Under A1--A6, there exists a threshold \(\Lambda^\star\) and constants \(\epsilon_-,\epsilon_+>0\) such that
+\[
+\Lambda_E\le \Lambda^\star-\epsilon_- \Rightarrow L_H\ge \underline{\ell}>0,\qquad
+\Lambda_E\ge \Lambda^\star+\epsilon_+ \Rightarrow L_H\le \overline{\ell},
+\]
+with \(\overline{\ell}\) small in the relevant asymptotic regime. Hence small changes in \(\Lambda_E\) near \(\Lambda^\star\) can induce first-order welfare changes.
+\end{theorem}
+
+\begin{corollary}[Policy-threshold implication]
+If TA-Patient increases effective liquidity relative to TA-Greedy (through lower effective \(\rho\) or higher rescue efficiency at fixed \(E_t\)), then there is a regime where
+\[
+\Delta_{\mathrm{TAP}-\mathrm{TAG}}=L^{\mathrm{TAG}}-L^{\mathrm{TAP}}>0
+\]
+if and only if effective liquidity exceeds a policy-dependent threshold.
+\end{corollary}
+
+\subsection{What remains open for a full AKL analogue}
+
+The following are the nontrivial missing proof blocks:
+\begin{enumerate}
+  \item A proof of A3 (stationary concentration and limit interchange) for the two-dimensional type process.
+  \item A proof of A4 from sparse random-graph/branching-process arguments for augmenting-path rescue.
+  \item Identification and uniqueness of the relevant TA-Patient branch in regimes with multiple fixed-point candidates.
+\end{enumerate}
+
+The reduced-form theorem above is therefore the cleanest rigorous target before a full theorem with minimal assumptions.
+
+\section{Endogenous liquidity fragility}
+
+The most novel channel relative to AKL is endogeneity:
+\begin{itemize}
+  \item AKL imbalance is exogenous.
+  \item Here, easy liquidity is endogenous because easy agents strategically exit (outside options), and mechanisms can change exit behavior.
+\end{itemize}
+
+Thus the object of design is \emph{liquidity fragility}: preserving \(\Lambda_E\) near criticality via policy tools can produce outsized welfare gains.
+
+\section{Mechanism-design mapping}
+
+The four policy interventions can be interpreted as ways to raise effective \(\Lambda_E\) or improve rescue efficiency conditional on \(E_t\):
+\begin{enumerate}
+  \item \textbf{Priority credits}: raises continuation value of waiting, reducing effective \(\rho\).
+  \item \textbf{Soft commitment}: explicit tenure/commitment penalties make \(\rho\) state-dependent and decreasing in tenure.
+  \item \textbf{Risk-adjusted kernel}: raises quality-adjusted rescue probability at a given stock.
+  \item \textbf{Preserve high-quality easy donors}: keeps strategically valuable \(E_G\) inventory available for hard rescue paths.
+\end{enumerate}
+
+\section{Proof roadmap (for a full theorem)}
+
+The likely route is stochastic-process and random-graph based rather than static stable-matching arguments:
+\begin{enumerate}
+  \item Derive stationary/mean-field behavior of \((H_t,E_t)\) and concentration.
+  \item Bound hard rescue probability before departure as a function of \(E_t\).
+  \item Show threshold behavior in rescue probability as liquidity crosses \(\Lambda^\star\).
+  \item Translate rescue threshold into a discontinuity/kink in \(L_H\) and policy advantage \(\Delta_{\mathrm{TAP}\!-\!\mathrm{TAG}}\).
+\end{enumerate}
+
+\section{Empirical simulation targets}
+
+For each mechanism, evaluate on \((\rho,\lambda_{\mathrm{ent}})\) and \((d_1,d_2)\) grids:
+\begin{itemize}
+  \item \(L_H,L_E,L_{\text{total}}\),
+  \item weighted objective \(w_HL_H+w_EL_E\),
+  \item winner maps and indifference frontiers.
+\end{itemize}
+
+The central empirical diagnostic is whether estimated threshold frontiers align with the conceptual \(\Lambda^\star\) structure above.
+
+\end{document}

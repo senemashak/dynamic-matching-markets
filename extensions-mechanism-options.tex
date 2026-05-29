@@ -1,0 +1,98 @@
+\section{Mechanism Extensions Under Outside Options}
+\label{sec:mechanism-extensions}
+
+This section formalizes four mechanism extensions for the heterogeneous dynamic matching model under outside options. The objective is to evaluate which mechanism best preserves welfare when easy-to-match agents have stronger incentives to exit.
+
+\subsection{Baseline environment}
+
+Let arrivals follow Poisson rates
+\[
+\lambda_H^{\text{arr}}=(1-\lambda_{\mathrm{ent}})m,\qquad
+\lambda_{\mathrm{ent}}m\ \text{for E arrivals},
+\]
+where \(\lambda_{\mathrm{ent}}\in(0,1)\) controls easy-type inflow composition. Compatibility primitives remain
+\[
+p_{HE}=\frac{d_1}{2m},\qquad p_{EE}=\frac{d_2}{2m}.
+\]
+Easy-type criticality (outside-option pressure) scales with \(\rho\):
+\[
+\text{critical rate of E pool}=\rho \cdot |E_t|.
+\]
+
+We evaluate each mechanism by weighted loss
+\[
+\mathcal{L}=w_H \cdot \text{H-loss} + w_E \cdot \text{E-loss},
+\]
+with default \(w_H=w_E=1\), consistent with total perishing over \(mT\).
+
+\subsection{Extension 1: Priority credits for patience}
+
+Agents accumulate credits while waiting. For bucketed credits \(c\in\{0,\ldots,C\}\), let \(N_t^{(i,c)}\) denote type-\(i\) mass with credit \(c\). Waiting induces transitions
+\[
+(i,c)\to(i,c+1)\quad\text{at rate }\gamma,\qquad c<C.
+\]
+Matching priority is credit-sensitive:
+\[
+\rho_{(i,c)\to(j,c')}(N_t)\ \text{increasing in } c.
+\]
+Economic channel: credits raise continuation value of waiting, effectively lowering endogenous exit propensity.
+
+\subsection{Extension 2: Soft commitment / tenure-dependent departure}
+
+Introduce tenure buckets and make easy-type departure hazard decline with tenure:
+\[
+\rho(c)=\rho_0 e^{-\alpha c},\qquad \alpha>0.
+\]
+This can also be approximated by piecewise hazards. Mechanism interpretation: leaving early forfeits future platform value (priority, guaranteed options, eligibility), so longer-tenure agents become less likely to exit.
+
+\subsection{Extension 3: Risk-adjusted matching kernel}
+
+Replace purely feasibility-based matching with utility-weighted selection:
+\[
+u_{ij}=q_{ij}-\lambda_R r_{ij},
+\]
+where \(q_{ij}\) is expected success quality and \(r_{ij}\) captures risk burden. The kernel becomes
+\[
+\rho_{i\to j}(N_t)\propto \max\{u_{ij},0\}.
+\]
+With patience effects, \(u_{ij}\) may shift with credit/tenure (e.g., better partner access after waiting), so waiting affects both match probability and expected quality.
+
+\subsection{Extension 4: Strategic preservation of high-quality easy donors}
+
+Partition easy agents into regular and high-quality subtypes:
+\[
+\mathcal{T}=\{H,E_R,E_G\}.
+\]
+Matches involving \(E_G\) can generate larger social value, especially for hard-to-match patients. This creates an intertemporal inventory problem: immediate easy-easy usage of \(E_G\) can reduce future rescue value for hard types. Preservation-oriented policies prioritize allocating \(E_G\) to hard critical events and restrict low-value depletion.
+
+\subsection{Simulation implementation mapping}
+
+The four mechanisms are implemented as four policy families in
+\texttt{simulate\_four\_mechanism\_policies.py}:
+\begin{itemize}
+  \item \texttt{priority\_credits}
+  \item \texttt{soft\_commitment}
+  \item \texttt{risk\_adjusted}
+  \item \texttt{preserve\_quality}
+\end{itemize}
+
+Each policy is simulated over a Cartesian grid \((\rho,\lambda_{\mathrm{ent}})\), and outputs include:
+\begin{itemize}
+  \item cell-level objective/loss CSV,
+  \item best-policy-by-cell CSV,
+  \item objective heatmaps by policy and winner map.
+\end{itemize}
+
+\subsection{Empirical question and identification from simulation}
+
+The central question is whether mechanisms that increase continuation value (credits, soft commitment, strategic donor preservation) dominate alternatives as outside-option pressure \(\rho\) rises, and whether this ranking changes with easy inflow share \(\lambda_{\mathrm{ent}}\). The best-policy map over \((\rho,\lambda_{\mathrm{ent}})\) directly identifies regime dependence.
+
+\subsection{Reproducibility commands}
+
+From \texttt{dynamic-matching-markets}:
+\begin{verbatim}
+python3 simulate_four_mechanism_policies.py
+python3 simulate_four_mechanism_policies.py --dense-grid --n-runs 12
+\end{verbatim}
+
+Outputs are written to \texttt{simulation\_outputs/}.
