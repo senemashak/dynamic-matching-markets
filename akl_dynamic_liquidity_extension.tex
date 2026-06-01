@@ -261,4 +261,92 @@ For each mechanism, evaluate on \((\rho,\lambda_{\mathrm{ent}})\) and \((d_1,d_2
 
 The central empirical diagnostic is whether estimated threshold frontiers align with the conceptual \(\Lambda^\star\) structure above.
 
+\subsection{Empirical drift-nullcline fixed-point diagnostic (TAP)}
+
+For the TAP finite-\(m\) chain at
+\[
+(m,d_1,d_2,\rho,\lambda_{\mathrm{ent}},T)=(5000,10,1000,10,0.5,120),
+\]
+with 8 runs and 35 state bins, the estimated local balance point from
+\texttt{simulation\_outputs/*\_fixed\_point\_summary.csv} is:
+\begin{center}
+\begin{tabular}{c|c}
+Quantity & Estimate\\\hline
+\(x^\ast=H/m\) & \(0.2449\)\\
+\(y^\ast=E/m\) & \(0.0355\)\\
+occupancy share at \((x^\ast,y^\ast)\) & \(0.0630\)\\
+\(F_H(x^\ast,y^\ast)\) & \(-0.00119\)\\
+\(F_E(x^\ast,y^\ast)\) & \(-0.00233\)\\
+\(\|F(x^\ast,y^\ast)\|_2\) & \(0.00262\)
+\end{tabular}
+\end{center}
+
+The top occupancy-adjusted balance bins from
+\texttt{simulation\_outputs/*\_balance\_table.csv} are:
+\begin{center}
+{\small
+\begin{tabular}{r|ccccc}
+rank & \(x\) & \(y\) & occupancy & \(\|F(x,y)\|_2\) & distance to \((x^\ast,y^\ast)\)\\\hline
+1 & \(0.2449\) & \(0.0355\) & \(0.0630\) & \(0.00262\) & \(0.0000\)\\
+2 & \(0.2532\) & \(0.0355\) & \(0.0502\) & \(0.00754\) & \(0.0083\)\\
+3 & \(0.2449\) & \(0.0368\) & \(0.0650\) & \(0.02043\) & \(0.0013\)\\
+4 & \(0.2449\) & \(0.0342\) & \(0.0681\) & \(0.02197\) & \(0.0013\)\\
+5 & \(0.2532\) & \(0.0342\) & \(0.0532\) & \(0.02225\) & \(0.0084\)
+\end{tabular}
+}
+\end{center}
+These diagnostics are descriptive rather than a formal proof: they indicate that simulated stationary mass concentrates near a low-drift neighborhood where both drift coordinates are close to zero.
+
+\section{Log-loss sensitivity in outside-option pressure}
+
+To mirror the asymptotic-loss style in the main notes, define policy loss as
+\[
+L_p(\rho;\lambda_{\mathrm{ent}},d_1,d_2),\qquad
+p\in\{\mathrm{TAP},\mathrm{TAG}\}.
+\]
+Define log-elasticity (local growth rate of loss with respect to \(\rho\)):
+\[
+S_p(\rho)
+:=\frac{\partial \log L_p}{\partial \log \rho}
+=\frac{\rho}{L_p}\frac{\partial L_p}{\partial \rho}.
+\]
+Hence \(S_p(\rho)\) is the percent increase in loss induced by a one-percent increase in easy-type criticality pressure \(\rho\).
+
+Define the log-advantage of TA-Patient:
+\[
+A(\rho)
+:=\log L_{\mathrm{TAG}}-\log L_{\mathrm{TAP}}
+=\log\!\left(\frac{L_{\mathrm{TAG}}}{L_{\mathrm{TAP}}}\right).
+\]
+Thus \(A(\rho)>0\) means TA-Patient has lower loss than TA-Greedy.
+
+\begin{proposition}[Equivalent local statements]
+\[
+S_{\mathrm{TAP}}(\rho)<S_{\mathrm{TAG}}(\rho)
+\quad\Longleftrightarrow\quad
+\frac{dA(\rho)}{d\log \rho}<0.
+\]
+\end{proposition}
+
+\begin{proof}
+Differentiate \(A\) with respect to \(\log\rho\):
+\[
+\frac{dA}{d\log\rho}
+=\frac{d\log L_{\mathrm{TAG}}}{d\log\rho}
+-\frac{d\log L_{\mathrm{TAP}}}{d\log\rho}
+=S_{\mathrm{TAG}}-S_{\mathrm{TAP}}.
+\]
+So \(S_{\mathrm{TAP}}<S_{\mathrm{TAG}}\) is equivalent to \(dA/d\log\rho<0\).
+\end{proof}
+
+\begin{remark}[Conjectural regime statement]
+In the empirically relevant intermediate-\(\rho\) region, both losses increase with \(\rho\), but TA-Patient's loss is conjectured to increase at a lower log-rate:
+\[
+\frac{\partial \log L_{\mathrm{TAP}}}{\partial \log \rho}
+<
+\frac{\partial \log L_{\mathrm{TAG}}}{\partial \log \rho}.
+\]
+This is the precise ``loss rises at a lower rate for TA-Patient'' statement in \(\rho\)-space.
+\end{remark}
+
 \end{document}
