@@ -8,6 +8,7 @@
 \usepackage[pdftex,colorlinks,backref=page,citecolor=blue]{hyperref}
 
 \allowdisplaybreaks
+\microtypesetup{expansion=false}
 \setlist[enumerate]{itemsep=2pt,topsep=4pt,leftmargin=*}
 
 \theoremstyle{plain}
@@ -16,6 +17,7 @@
 \newtheorem{proposition}{Proposition}
 \newtheorem{example}{Example}
 \newtheorem{corollary}{Corollary}
+\newtheorem{conjecture}{Conjecture}
 \theoremstyle{definition}
 \newtheorem{remark}{Remark}
 \newtheorem{definition}{Definition}
@@ -86,7 +88,7 @@ The decay exponent $1/(4(1+\rho))$ is strictly decreasing in $\rho$: at $\rho=1$
 \end{enumerate}
 
 \paragraph{Economic interpretation.}
-The asymmetry between Patient and Greedy policies in their ρ-exposure has a clean intuition. Under Greedy, matching happens at agent \emph{arrival}: a new H (or E) immediately checks the current pool for a compatible partner. The steady-state E pool size shrinks with $\rho$, but at leading order (as $d_2 \to \infty$) this effect is washed out --- the H-E matching density $d_1$ is the binding constraint, and the E pool is dense enough at leading order regardless of $\rho$. Under Patient, matching happens at agent \emph{criticality}: an E agent becomes critical at rate $\rho$ and then (and only then) attempts to match an H. The E agent's expected rescue capacity is proportional to $1/\rho$: faster departure means each E rescues fewer H agents over its sojourn. This is why $\rho$ enters multiplicatively in $L^{\text{Patient}} = 4\rho W(d_1/(8\rho))/d_1$ but not at leading order in $L^{\text{Greedy}}$.
+The asymmetry between Patient and Greedy policies in their $\rho$-exposure has a clean intuition. Under Greedy, matching happens at agent \emph{arrival}: a new H (or E) immediately checks the current pool for a compatible partner. The steady-state E pool size shrinks with $\rho$, but at leading order (as $d_2 \to \infty$) this effect is washed out --- the H-E matching density $d_1$ is the binding constraint, and the E pool is dense enough at leading order regardless of $\rho$. Under Patient, matching happens at agent \emph{criticality}: an E agent becomes critical at rate $\rho$ and then (and only then) attempts to match an H. The E agent's expected rescue capacity is proportional to $1/\rho$: faster departure means each E rescues fewer H agents over its sojourn. This is why $\rho$ enters multiplicatively in $L^{\text{Patient}} = 4\rho W(d_1/(8\rho))/d_1$ but not at leading order in $L^{\text{Greedy}}$.
 
 For TA-Patient, the effect is more subtle: waiting and type-awareness jointly enable exponential rescue chains, but these chains are truncated by E departures. Higher $\rho$ means E agents initiate fewer rescue chains before leaving, compressing the exponent from $d_1/8$ (at $\rho=1$) toward 0 (as $\rho \to \infty$). Reducing $\rho$ is therefore especially valuable for TA-Patient: it is the policy most exposed to outside-option pressure, and also the policy that gains most from reducing it.
 
@@ -207,7 +209,7 @@ The TA-Greedy fixed-point system is (from \cite{notes-experimental} equations (4
 2x &= e^{-d_1 y/2} + e^{-d_1 x/2} - 1, \label{eq:TAG-fix1-rho}\\
 \rho y &= \tfrac12\bigl(e^{-d_1 x/2} - e^{-(d_1 x + d_2 y)/2}\bigr) + \tfrac12\bigl(e^{-d_1 y/2} - 1\bigr) + \tfrac12 e^{-d_1 x/2}(1 - e^{-d_2 y/2}). \label{eq:TAG-fix2-rho}
 \end{align}
-Note that \eqref{eq:TAG-fix1-rho} is \emph{unchanged} from the $\rho=1$ case (F_1 doesn't involve $\rho$).
+Note that \eqref{eq:TAG-fix1-rho} is \emph{unchanged} from the $\rho=1$ case ($F_1$ does not involve $\rho$).
 
 \begin{lemma}[TA-Greedy loss is $\rho$-independent at leading order]\label{lem:tag-rho-indep}
 \proved As $d_2 \to \infty$, $\rho y \to 0$ and the limiting $x$-coordinate satisfies $2x = e^{-d_1 x/2}$, giving $x^\ast_{\mathrm{TA}} = 2W(d_1/4)/d_1$. Hence $L^{\text{TA-Greedy}}(d_1,\rho) = 2W(d_1/4)/d_1 + O(1/d_2)$, independent of $\rho$ at leading order.
