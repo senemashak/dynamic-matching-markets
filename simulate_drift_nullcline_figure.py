@@ -518,31 +518,191 @@ def _plot_interpretable(
     plt.close(fig)
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser(description="Estimate drift/nullclines for (H_t, E_t) CTMC.")
-    parser.add_argument("--policy", type=str, default="TAP", choices=POLICIES)
-    parser.add_argument("--m", type=int, default=5000)
-    parser.add_argument("--d1", type=float, default=10.0)
-    parser.add_argument("--d2", type=float, default=1000.0)
-    parser.add_argument("--lambda-ent", type=float, default=0.5)
-    parser.add_argument("--rho", type=float, default=10.0)
-    parser.add_argument("--horizon", type=float, default=120.0)
-    parser.add_argument("--burn-in", type=float, default=20.0)
-    parser.add_argument("--n-runs", type=int, default=8)
-    parser.add_argument("--bins", type=int, default=35)
-    parser.add_argument("--seed", type=int, default=20260601)
-    parser.add_argument("--out-dir", type=Path, default=Path("simulation_outputs"))
-    args = parser.parse_args()
+def _plot_markov_arrows(
+    out_path: Path,
+    x_edges: np.ndarray,
+    y_edges: np.ndarray,
+    x_centers: np.ndarray,
+    y_centers: np.ndarray,
+    occ: np.ndarray,
+    drift_x: np.ndarray,
+    drift_y: np.ndarray,
+    time_in_bin: np.ndarray,
+    trajectories: list[tuple[np.ndarray, np.ndarray]],
+    i_star: int,
+    j_star: int,
+    m: int,
+    policy: str,
+    title: str,
+) -> None:
+    if not HAS_MPL:
+        print("matplotlib not installed; skipping Markov arrow PNG.")
+        return
 
-    if args.n_runs < 1:
-        raise ValueError("--n-runs must be >= 1")
-    if args.bins < 8:
-        raise ValueError("--bins should be >= 8")
-    if args.horizon <= args.burn_in:
-        raise ValueError("--horizon must exceed --burn-in")
+    # Convert state coordinates and drift units from shares to agent counts.
+    x_edges_count = x_edges * m
+    y_edges_count = y_edges * m
+    x_centers_count = x_centers * m
+    y_centers_count = y_centers * m
+    drift_h = drift_x * m
+    drift_e = drift_y * m
 
-    args.out_dir.mkdir(parents=True, exist_ok=True)
+    X, Y = np.meshgrid(x_centers_count, y_centers_count, indexing="ij")
+    valid = time_in_bin > 0
+    if not np.any(valid):
+        print("No visited bins; skipping Markov arrow PNG.")
+        return
 
+    # Keep only high-occupancy bins for cleaner arrows.
+    occ_cut = float(np.quantile(occ[valid], 0.70))
+    mask = valid & (occ >= occ_cut)
+
+    # Downsample to keep plot legible.
+    stride = max(1, len(x_centers) // 14)
+    Xm = X[::stride, ::stride]
+    Ym = Y[::stride, ::stride]
+    Um = drift_h[::stride, ::stride]
+    Vm = drift_e[::stride, ::stride]
+    Mm = mask[::stride, ::stride]
+    if not np.any(Mm):
+        Mm = valid[::stride, ::stride]
+
+    # Robustly scale arrows so outliers do not dominate the visual.
+    Nm = np.sqrt(Um**2 + Vm**2)
+    n_ref = float(np.quantile(Nm[Mm], 0.90)) if np.any(Mm) else 1.0
+    if n_ref <= 1e-12:
+        n_ref = 1.0
+    direction_u = np.divide(Um, Nm, out=np.zeros_like(Um), where=Nm > 1e-12)
+    direction_v = np.divide(Vm, Nm, out=np.zeros_like(Vm), where=Nm > 1e-12)
+    rel = np.clip(Nm / n_ref, 0.0, 1.0)
+    max_axis = max(float(x_edges_count[-1]), float(y_edges_count[-1]), 1.0)
+    arrow_len = (0.009 * max_axis) + (0.024 * max_axis) * rel
+    U_plot = direction_u * arrow_len
+    V_plot = direction_v * arrow_len
+
+    fig, ax = plt.subplots(1, 1, figsize=(8.1, 6.6), constrained_layout=True)
+
+    im = ax.pcolormesh(x_edges_count, y_edges_count, occ.T, shading="auto", cmap="Greys", alpha=0.22)
+    q = ax.quiver(
+        Xm[Mm],
+        Ym[Mm],
+        U_plot[Mm],
+        V_plot[Mm],
+        rel[Mm],
+        cmap="plasma",
+        angles="xy",
+        scale_units="xy",
+        scale=1.0,
+        pivot="mid",
+        width=0.004,
+        alpha=0.95,
+    )
+    ax.quiverkey(q, X=0.86, Y=1.03, U=0.02 * max_axis, label="relative drift scale", labelpos="E")
+
+    c1 = ax.contour(X, Y, drift_h, levels=[0.0], colors="#00B3B3", linewidths=2.1)
+    c2 = ax.contour(X, Y, drift_e, levels=[0.0], colors="#B300B3", linewidths=2.1)
+
+    # Overlay sampled phase trajectories (H_t, E_t), similar to ht/et style.
+    traj_color = (
+        "#1f77b4" if policy == "greedy" else
+        "#d62728" if policy == "patient" else
+        "#2ca02c" if policy == "TAG" else
+        "#9467bd"
+    )
+    max_paths = 6
+    for tx, ty in trajectories[:max_paths]:
+        if len(tx) < 2:
+            continue
+        tx_count = tx * m
+        ty_count = ty * m
+        ax.plot(tx_count, ty_count, color=traj_color, alpha=0.52, linewidth=1.5, zorder=4)
+        ax.scatter(tx_count[0], ty_count[0], color=traj_color, s=20, marker="o", zorder=5)
+        ax.scatter(tx_count[-1], ty_count[-1], color=traj_color, s=24, marker="x", zorder=5)
+
+    x_star = x_centers_count[i_star]
+    y_star = y_centers_count[j_star]
+    ax.scatter([x_star], [y_star], marker="*", s=170, color="gold", edgecolor="black", linewidth=0.7, zorder=6)
+    ax.text(
+        x_star,
+        y_star,
+        f"  k*≈({x_star:.1f}, {y_star:.1f})",
+        fontsize=8,
+        color="black",
+        va="bottom",
+        ha="left",
+    )
+
+    # Minimal legend without contour labels on the plot body.
+    ax.plot([], [], color="#00B3B3", linewidth=2.1, label=r"$F_H=0$")
+    ax.plot([], [], color="#B300B3", linewidth=2.1, label=r"$F_E=0$")
+    ax.plot([], [], color=traj_color, linewidth=1.7, label="sample phase trajectories")
+    ax.scatter([], [], color=traj_color, s=20, marker="o", label="trajectory start")
+    ax.scatter([], [], color=traj_color, s=24, marker="x", label="trajectory end")
+    ax.scatter([], [], marker="*", s=120, color="gold", edgecolor="black", linewidth=0.7, label=r"estimated $k^\ast$")
+    ax.legend(loc="upper right", frameon=True, facecolor="white", framealpha=0.9, fontsize=8)
+
+    ax.set_title("Markov-chain drift + phase trajectories")
+    ax.set_xlabel(r"Number of hard-to-match agents ($H_t$)")
+    ax.set_ylabel(r"Number of easy-to-match agents ($E_t$)")
+    fig.colorbar(im, ax=ax, shrink=0.9, label="Occupancy share")
+    fig.colorbar(q, ax=ax, shrink=0.85, pad=0.02, label="Relative drift magnitude")
+    fig.suptitle(title, fontsize=12.5)
+    fig.savefig(out_path, dpi=200)
+    plt.close(fig)
+
+
+def _plot_occupancy_star(
+    out_path: Path,
+    x_edges: np.ndarray,
+    y_edges: np.ndarray,
+    x_centers: np.ndarray,
+    y_centers: np.ndarray,
+    occ: np.ndarray,
+    i_star: int,
+    j_star: int,
+    m: int,
+    title: str,
+) -> None:
+    if not HAS_MPL:
+        print("matplotlib not installed; skipping occupancy-star PNG.")
+        return
+
+    x_edges_count = x_edges * m
+    y_edges_count = y_edges * m
+    x_star = x_centers[i_star] * m
+    y_star = y_centers[j_star] * m
+
+    fig, ax = plt.subplots(1, 1, figsize=(7.5, 6.1), constrained_layout=True)
+    im = ax.pcolormesh(x_edges_count, y_edges_count, occ.T, shading="auto", cmap="viridis")
+    ax.scatter(
+        [x_star],
+        [y_star],
+        marker="*",
+        s=210,
+        color="gold",
+        edgecolor="black",
+        linewidth=0.8,
+        zorder=5,
+    )
+    ax.text(
+        x_star,
+        y_star,
+        f"  (h*, e*) ≈ ({x_star:.1f}, {y_star:.1f})",
+        fontsize=9,
+        color="white",
+        va="bottom",
+        ha="left",
+    )
+    ax.set_xlabel(r"Number of hard-to-match agents ($H_t$)")
+    ax.set_ylabel(r"Number of easy-to-match agents ($E_t$)")
+    ax.set_title(r"Occupancy heatmap: $\Pr(H_t=h, E_t=e)$")
+    fig.colorbar(im, ax=ax, shrink=0.9, label=r"Estimated $\Pr(H_t=h, E_t=e)$")
+    fig.suptitle(title, fontsize=12.5)
+    fig.savefig(out_path, dpi=200)
+    plt.close(fig)
+
+
+def _run_for_policy(args: argparse.Namespace, policy: str) -> None:
     all_x_prev = []
     all_y_prev = []
     all_dx = []
@@ -555,7 +715,7 @@ def main() -> None:
             m=args.m,
             d1=args.d1,
             d2=args.d2,
-            policy=args.policy,
+            policy=policy,
             lambda_ent=args.lambda_ent,
             rho=args.rho,
             horizon=args.horizon,
@@ -573,7 +733,7 @@ def main() -> None:
         trajectories.append((s.traj_x, s.traj_y))
 
     if not all_x_prev:
-        raise RuntimeError("No post-burn-in events collected. Increase horizon or reduce burn-in.")
+        raise RuntimeError(f"No post-burn-in events collected for policy={policy}.")
 
     x_prev = np.concatenate(all_x_prev)
     y_prev = np.concatenate(all_y_prev)
@@ -599,12 +759,14 @@ def main() -> None:
     occ = time_in_bin / np.sum(time_in_bin)
 
     stem = (
-        f"drift_nullclines_policy_{args.policy}_m{args.m}_d1_{args.d1:g}_d2_{args.d2:g}_"
+        f"drift_nullclines_policy_{policy}_m{args.m}_d1_{args.d1:g}_d2_{args.d2:g}_"
         f"rho_{args.rho:g}_lambdaEnt_{args.lambda_ent:g}_T{args.horizon:g}_runs{args.n_runs}_bins{args.bins}"
     )
     csv_path = args.out_dir / f"{stem}.csv"
     png_path = args.out_dir / f"{stem}.png"
     interp_png_path = args.out_dir / f"{stem}_interpretable.png"
+    arrows_png_path = args.out_dir / f"{stem}_markov_arrows.png"
+    occ_star_png_path = args.out_dir / f"{stem}_occupancy_star.png"
     summary_csv_path = args.out_dir / f"{stem}_fixed_point_summary.csv"
     table_csv_path = args.out_dir / f"{stem}_balance_table.csv"
 
@@ -642,7 +804,7 @@ def main() -> None:
         j_star,
     )
     title = (
-        f"Drift/nullcline diagnostics for ({args.policy})  "
+        f"Drift/nullcline diagnostics for ({policy})  "
         f"m={args.m}, d1={args.d1:g}, d2={args.d2:g}, rho={args.rho:g}, "
         f"lambda_ent={args.lambda_ent:g}, T={args.horizon:g}"
     )
@@ -661,14 +823,87 @@ def main() -> None:
         j_star,
         title,
     )
+    _plot_markov_arrows(
+        arrows_png_path,
+        x_edges,
+        y_edges,
+        x_centers,
+        y_centers,
+        occ,
+        drift_x,
+        drift_y,
+        time_in_bin,
+        trajectories,
+        i_star,
+        j_star,
+        args.m,
+        policy,
+        title,
+    )
+    _plot_occupancy_star(
+        occ_star_png_path,
+        x_edges,
+        y_edges,
+        x_centers,
+        y_centers,
+        occ,
+        i_star,
+        j_star,
+        args.m,
+        title,
+    )
 
-    print("Wrote:")
+    print(f"[{policy}] Wrote:")
     print(f"  {csv_path.name}")
     print(f"  {summary_csv_path.name}")
     print(f"  {table_csv_path.name}")
     if HAS_MPL:
         print(f"  {png_path.name}")
         print(f"  {interp_png_path.name}")
+        print(f"  {arrows_png_path.name}")
+        print(f"  {occ_star_png_path.name}")
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Estimate drift/nullclines for (H_t, E_t) CTMC.")
+    parser.add_argument(
+        "--policy",
+        type=str,
+        default="TAP",
+        help="One of {greedy, patient, TAG, TAP} or 'all'.",
+    )
+    parser.add_argument("--m", type=int, default=5000)
+    parser.add_argument("--d1", type=float, default=10.0)
+    parser.add_argument("--d2", type=float, default=1000.0)
+    parser.add_argument("--lambda-ent", type=float, default=0.5)
+    parser.add_argument("--rho", type=float, default=10.0)
+    parser.add_argument("--horizon", type=float, default=120.0)
+    parser.add_argument("--burn-in", type=float, default=20.0)
+    parser.add_argument("--n-runs", type=int, default=8)
+    parser.add_argument("--bins", type=int, default=35)
+    parser.add_argument("--seed", type=int, default=20260601)
+    parser.add_argument("--out-dir", type=Path, default=Path("simulation_outputs"))
+    args = parser.parse_args()
+
+    if args.n_runs < 1:
+        raise ValueError("--n-runs must be >= 1")
+    if args.bins < 8:
+        raise ValueError("--bins should be >= 8")
+    if args.horizon <= args.burn_in:
+        raise ValueError("--horizon must exceed --burn-in")
+
+    args.out_dir.mkdir(parents=True, exist_ok=True)
+
+    policy_token = args.policy.strip()
+    if policy_token.lower() == "all":
+        policies = list(POLICIES)
+    elif policy_token in POLICIES:
+        policies = [policy_token]
+    else:
+        raise ValueError(f"--policy must be one of {POLICIES} or 'all'.")
+
+    for policy in policies:
+        _run_for_policy(args, policy)
 
 
 if __name__ == "__main__":

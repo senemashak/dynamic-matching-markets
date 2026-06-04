@@ -1,0 +1,2 @@
+x_star,y_star,occupancy_share_at_star,time_in_bin_at_star,drift_x_at_star,drift_y_at_star,drift_norm_at_star,occupancy_threshold_for_candidate_bins,share_of_bins_with_data
+0.31791893,0.23194164,0.1497245564,119.7793168358,-0.0018934822,0.0010101911,0.0021461036,0.0039218384,0.0465306122
