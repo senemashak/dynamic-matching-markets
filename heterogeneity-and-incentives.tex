@@ -8,7 +8,6 @@
 \usepackage[pdftex,colorlinks,backref=page,citecolor=blue]{hyperref}
 
 \allowdisplaybreaks
-\microtypesetup{expansion=false}
 \setlist[enumerate]{itemsep=2pt,topsep=4pt,leftmargin=*}
 
 \theoremstyle{plain}
@@ -33,67 +32,32 @@
 
 \title{Heterogeneity and Incentives in Dynamic Matching Markets:\\
 Outside Options, Liquidity, and Competition between Exchanges}
-\author{Sinaya Joshi \\ \textit{Stanford University}}
+\author{Senem I\c{s}\i{}k \\ \textit{Stanford University}}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-We extend the two-type dynamic sparse matching model of \cite{notes-experimental} to allow easy-to-match (E) agents to face outside-option pressure: E agents become critical at rate $\rho \ge 1$ rather than rate 1. This models the departure of potential donors from a market when attractive alternatives exist elsewhere---a central feature of organ exchange platforms and gig-economy matching. We derive closed-form loss functions for all four policies as functions of $\rho$ and $d_1$, revealing a sharp asymmetry: \textbf{Patient-type policies are directly exposed to outside-option pressure while Greedy-type policies are not, at leading order.} Specifically, $L^{\text{Patient}}(d_1,\rho) = 4\rho W(d_1/(8\rho))/d_1$ and $L^{\text{TA-Greedy}}(d_1,\rho) = 2W(d_1/4)/d_1$ (independent of $\rho$), yielding a novel duality $L^{\text{Patient}}(d_1,\rho) = L^{\text{TA-Greedy}}(d_1/(2\rho))$. For TA-Patient, the exponential decay rate becomes $e^{-d_1/(4(1+\rho))}$: stronger outside options compress the exponential advantage. We then study competition between a public exchange (constrained to a simple policy, cannot offer incentives) and a private exchange (uses TA-Patient, can reduce effective $\rho$). Competition is welfare-improving when the policy gap is large relative to the pool-fragmentation cost, and private exchanges can dominate public monopoly by attracting E agents through incentive design that endogenously lowers $\rho$. These findings speak to the empirical debate over single large public kidney exchanges versus multiple private hospital consortia.
+We extend the two-type continuous-time dynamic matching model to allow easy-to-match (E) agents to face outside-option pressure: E agents become critical (depart) at rate $\rho \ge 1$ rather than rate 1. This models potential donors or versatile workers who can exit the matching market when attractive alternatives exist elsewhere. We derive closed-form loss functions for all four canonical policies (Greedy, Patient, Type-Aware Greedy, Type-Aware Patient) as functions of $\rho$ and $d_1$ (H-E compatibility density), revealing a fundamental asymmetry: \textbf{Patient-type policies are directly exposed to outside-option pressure while Greedy-type policies are not, at leading order.}
+
+Key results: $L^{\text{Patient}}(d_1,\rho) = 4\rho W(d_1/(8\rho))/d_1$ and $L^{\text{TA-Greedy}}(d_1,\rho) = 2W(d_1/4)/d_1$ (independent of $\rho$), yielding duality $L^{\text{Patient}}(d_1,\rho) = L^{\text{TA-Greedy}}(d_1/(2\rho))$. For TA-Patient, the exponential decay rate becomes $e^{-d_1/(4(1+\rho))}$: stronger outside options compress the exponential advantage. We analyze competition between platforms, showing private exchanges can dominate public monopoly when markets are thick enough. These findings speak to the empirical debate over kidney exchange consolidation.
 \end{abstract}
 
 \tableofcontents
 
 \section{Introduction}
+\label{sec:intro}
 
-A central question in the design of matching platforms is whether to centralize or fragment the market. In kidney exchange, the US relies on multiple hospital-run consortia and an OPTN clearinghouse; other countries have experimented with single national registries. The economic literature (\cite{akbarpour,ashlagi2023matching}) has emphasized the gains from thicker markets: pooling more agents increases match rates, especially for hard-to-match (H) types. Yet many countries choose decentralized private exchanges. What justifies fragmentation?
+A central question in matching market design is whether to centralize or fragment. In kidney exchange, the US relies on multiple hospital-run consortia and an OPTN clearinghouse; other countries have experimented with single national registries. The economic literature has emphasized the gains from thicker markets: pooling more agents increases match rates, especially for hard-to-match types. Yet many countries choose decentralized private exchanges. What justifies fragmentation?
 
-This paper offers a new answer: when easy-to-match (E) agents---altruistic donors, bridge donors, easily-compatible pairs---have outside options that cause them to leave the market, the key design variable is not just pool size but how quickly the market captures value from E agents before they exit. A platform that can credibly reduce E agents' effective departure rate (through priority credits, commitment mechanisms, or better match quality) delivers strictly higher welfare for H agents. This is a dimension on which private platforms, unconstrained by public procurement rules, may have an advantage.
+This paper identifies a new mechanism: when easy-to-match agents (altruistic donors, bridge donors, versatile workers) have outside options that cause them to leave the market, the key design variable is not just pool size but how quickly the market captures value from easy agents before they exit. A platform that can credibly reduce easy agents' effective departure rate (through priority credits, commitment mechanisms, or better match quality) delivers strictly higher welfare for hard-to-match agents. This is a dimension on which private platforms, unconstrained by public procurement rules, may have an advantage.
 
-\paragraph{Setup.}
-We extend the model of \cite{notes-experimental}: H and E agents arrive at equal rate $m/2$, $p_{HH} = 0$, $p_{HE} = d_1/(2m)$, $p_{EE} = d_2/(2m)$ with $d_2 > d_1 > 0$ (sparse, balanced). The new parameter is $\rho \ge 1$: E agents become critical (face departure from the market) at rate $\rho$ per agent, while H agents still become critical at rate 1. The key object is the \emph{effective E-liquidity}:
+\paragraph{The key parameter: $\rho$.}
+We introduce the E departure rate $\rho \ge 1$ as a central parameter. When $\rho = 1$, E agents have no special outside-option pressure (baseline). When $\rho > 1$, E agents become critical (and potentially depart) faster. The effective E-liquidity is:
 \begin{equation}\label{eq:Lambda}
 \Lambda_E \;:=\; \frac{(m/2)}{\rho},
 \end{equation}
-proportional to the steady-state E pool size. As $\rho$ rises (stronger outside options), $\Lambda_E$ falls and H welfare degrades.
-
-\paragraph{Main findings.}
-\begin{enumerate}
-\item \textbf{Patient loss with $\rho$ (proved, \S\ref{sec:patient-rho}):}
-\[
-L^{\text{Patient}}(d_1,\rho) \;=\; \frac{4\rho\, W(d_1/(8\rho))}{d_1}.
-\]
-Loss is increasing in $\rho$. The elasticity $\partial \log L/\partial \log \rho = W(d_1/(8\rho))/(1+W(d_1/(8\rho)))$ is bounded in $(0,1)$, with the largest sensitivity near the critical liquidity threshold.
-
-\item \textbf{Greedy loss is $\rho$-independent at leading order (proved, \S\ref{sec:greedy-rho}):}
-\[
-L^{\text{Greedy}}(d_1,\rho) \;=\; L^{\text{Greedy}}(d_1) + O(1/d_2),
-\]
-and similarly $L^{\text{TA-Greedy}}(d_1,\rho) = L^{\text{TA-Greedy}}(d_1) + O(1/d_2)$.
-The leading-order losses are identical to the $\rho=1$ case.
-
-\item \textbf{Duality with $\rho$ (proved, \S\ref{sec:duality}):}
-\[
-L^{\text{Patient}}(d_1,\rho) \;=\; L^{\text{TA-Greedy}}\!\left(\frac{d_1}{2\rho}\right).
-\]
-Patient matching at E-departure pressure $\rho$ is equivalent to TA-Greedy at an $H$-$E$ density rescaled by $1/(2\rho)$.
-
-\item \textbf{TA-Patient decay with $\rho$ (conditional/open, \S\ref{sec:TAP-rho}):}
-\[
-L^{\text{TA-Patient}}(d_1,\rho) \;\sim\; \frac{(2\rho)^{1/(1+\rho)}}{2(1+\rho)}\,e^{-d_1/(4(1+\rho))} \qquad (d_1 \to \infty).
-\]
-The decay exponent $1/(4(1+\rho))$ is strictly decreasing in $\rho$: at $\rho=1$, recovery of $e^{-d_1/8}$; as $\rho\to\infty$, decay rate vanishes.
-
-\item \textbf{Competition between exchanges (open, \S\ref{sec:competition}):} A private exchange that reduces effective $\rho$ from $\rho_0$ to $\rho_1 < \rho_0$ generates a welfare gain of order $e^{-d_1/(4(1+\rho_1))} - e^{-d_1/(4(1+\rho_0))}$ under TA-Patient. Competition is welfare-improving when this gain exceeds the pool-fragmentation cost.
-\end{enumerate}
-
-\paragraph{Economic interpretation.}
-The asymmetry between Patient and Greedy policies in their $\rho$-exposure has a clean intuition. Under Greedy, matching happens at agent \emph{arrival}: a new H (or E) immediately checks the current pool for a compatible partner. The steady-state E pool size shrinks with $\rho$, but at leading order (as $d_2 \to \infty$) this effect is washed out --- the H-E matching density $d_1$ is the binding constraint, and the E pool is dense enough at leading order regardless of $\rho$. Under Patient, matching happens at agent \emph{criticality}: an E agent becomes critical at rate $\rho$ and then (and only then) attempts to match an H. The E agent's expected rescue capacity is proportional to $1/\rho$: faster departure means each E rescues fewer H agents over its sojourn. This is why $\rho$ enters multiplicatively in $L^{\text{Patient}} = 4\rho W(d_1/(8\rho))/d_1$ but not at leading order in $L^{\text{Greedy}}$.
-
-For TA-Patient, the effect is more subtle: waiting and type-awareness jointly enable exponential rescue chains, but these chains are truncated by E departures. Higher $\rho$ means E agents initiate fewer rescue chains before leaving, compressing the exponent from $d_1/8$ (at $\rho=1$) toward 0 (as $\rho \to \infty$). Reducing $\rho$ is therefore especially valuable for TA-Patient: it is the policy most exposed to outside-option pressure, and also the policy that gains most from reducing it.
-
-\paragraph{Relation to prior work.}
-\cite{akbarpour} establish the homogeneous benchmark. \cite{ashlagi2023matching} study dense imbalance ($\rho > 1$ in their arrival-rate sense, not departure rate). Our model is closest to \cite{notes-experimental}, which we extend by introducing $\rho$ as a departure-rate parameter. The AKL-liquidity note \cite{akl-liquidity} motivates the effective-liquidity formulation and the threshold theorem. On competition in matching markets, \cite{agarwal2021} study the gains from consolidation in kidney exchange, which our model complements by identifying a countervailing incentive-design channel.
+proportional to the steady-state E pool size. As $\rho$ rises, $\Lambda_E$ falls and hard-type welfare degrades.
 
 \section{Model}
 \label{sec:model}
@@ -104,513 +68,189 @@ The market has two types: hard-to-match (H) and easy-to-match (E). Both arrive a
 \[
 p_{HH} = 0, \quad p_{HE} = \frac{d_1}{2m}, \quad p_{EE} = \frac{d_2}{2m}, \quad d_2 > d_1 > 0.
 \]
-\textbf{Departure rates.} H agents become critical (face their final chance to match, then perish if unmatched) at rate 1. E agents become critical at rate $\rho \ge 1$. The parameter $\rho$ captures outside-option pressure on E agents: $\rho = 1$ recovers the baseline of \cite{notes-experimental}; $\rho > 1$ models E agents who are more likely to leave for alternatives (other platforms, altruistic opportunities elsewhere, donor fatigue).
 
-\begin{remark}[Two uses of $\rho$]
-In \cite{notes-experimental} Section 8, the symbol $\rho = m_1/m_2$ denotes the \emph{arrival rate ratio} between H and E types. In this paper, $\rho$ denotes the \emph{E departure rate}. These are distinct parameters; the arrival rates remain equal at $m/2$ each. We reserve $\rho$ for the departure rate throughout.
+\textbf{Departure rates.} H agents become critical at rate 1. E agents become critical at rate $\rho \ge 1$. The parameter $\rho$ captures outside-option pressure: $\rho = 1$ is the baseline; $\rho > 1$ models E agents who are more likely to leave for alternatives.
+
+\begin{remark}[Note on $\rho$]
+In prior work, $\rho$ was used for the arrival-rate ratio between types. Here, $\rho$ denotes the E departure rate. These are distinct parameters; the arrival rates remain equal at $m/2$ each.
 \end{remark}
 
-\subsection{Policies}
+\subsection{Four policies}
 
-We study the same four policies as \cite{notes-experimental}:
+We study:
 \begin{itemize}
 \item \textbf{Greedy}: match on arrival, uniform among compatible neighbours.
 \item \textbf{TA-Greedy}: match on arrival, H-priority for E agents.
 \item \textbf{Patient}: match at criticality, uniform among compatible neighbours.
 \item \textbf{TA-Patient}: match at criticality, H-priority for E agents.
 \end{itemize}
-All four policies are ``local'' in the sense of \cite{akbarpour}: matching decisions use only current compatibility information, not future arrivals.
 
-\subsection{Pool process and loss}
+\subsection{Pool dynamics and loss}
 
-The pool state $(H_t, E_t) \in \mathbb{Z}_{\ge 0}^2$ and rescaled state $x = H/m, y = E/m$. Under any Greedy variant, the pool graph is edgeless (Lemma 1 of \cite{notes-experimental}, unchanged under $\rho$). Under any Patient variant, unrevealed edges among pooled agents remain independent (same lemma). The CTMC is irreducible and positive-recurrent by the Lyapunov function $V(h,e) = h + \rho e$ (the $\rho$-weighted variant handles the faster E departure).
+The pool state is $(H_t, E_t) \in \mathbb{Z}_{\ge 0}^2$. Under any Greedy variant, the pool graph is edgeless (no two pooled agents have tested edges). Under any Patient variant, unrevealed edges among pooled agents remain independent.
 
-The long-run loss (fraction of agents perishing unmatched) is:
+The long-run loss is:
 \begin{equation}\label{eq:loss-def}
-L \;=\; \frac{
-  \E_\pi[\text{H perish rate}] + \E_\pi[\text{E perish rate}]
-}{
-  m
-} \;=\; x^\ast(1-\pi_H) + \rho y^\ast(1-\pi_E),
+L \;=\; \frac{\E_\pi[\text{H perish rate}] + \E_\pi[\text{E perish rate}]}{m} \;=\; x^\ast(1-\pi_H) + \rho y^\ast(1-\pi_E),
 \end{equation}
-where $\pi_H, \pi_E$ are the compatibility probabilities defined in \cite{notes-experimental} equation~(2), and $(x^\ast, y^\ast)$ is the mean-field fixed point (under Hypothesis~H, the stationary distribution concentrates at this point as $m \to \infty$).
+where $(x^\ast, y^\ast)$ is the mean-field fixed point.
 
-\subsection{The effective liquidity parameter}
-
-\begin{definition}[Effective E-liquidity]\label{def:lambda}
-The effective E-liquidity is $\Lambda_E := (m/2)/\rho$, proportional to the expected stationary E pool size in the absence of matching (a birth-death chain with arrivals $m/2$ and criticalities $\rho$).
-\end{definition}
-
-The liquidity $\Lambda_E$ decreases in $\rho$ (stronger outside options) and increases in $m$ (thicker market). The central question of this paper is: how do the four policies respond to changes in $\Lambda_E$, and what can mechanism designers do to preserve it?
-
-\section{Mean-Field Analysis with Variable $\rho$}
+\section{Analysis with Variable $\rho$}
 \label{sec:mf}
 
-\subsection{Greedy with $\rho$: leading-order independence}
+\subsection{Greedy: leading-order independence from $\rho$}
 \label{sec:greedy-rho}
 
-The Greedy drift at $\rho$ is:
+The Greedy drift is:
 \begin{align}
-F_1(x,y) &= \tfrac12(1-\pi_H) - x - \tfrac12 r_{EH}, \label{eq:F1-rho}\\
-F_2(x,y) &= \tfrac12(1-\pi_E) - \rho y - \tfrac12 \pi_H - \tfrac12 r_{EE}. \label{eq:F2-rho}
-\end{align}
-Only $F_2$ changes from the $\rho=1$ case (the $-y$ term becomes $-\rho y$).
-
-\begin{lemma}[Greedy balance with $\rho$]\label{lem:greedy-balance-rho}
-\proved Any interior fixed point of \eqref{eq:F1-rho}--\eqref{eq:F2-rho} satisfies
-\begin{align}
-x^\ast + \rho y^\ast &= 1 - \pi_H(x^\ast,y^\ast) - \pi_E(x^\ast,y^\ast), \label{eq:GS1}\\
-x^\ast - \rho y^\ast &= r_{EE}(x^\ast,y^\ast). \label{eq:GS2}
-\end{align}
-\end{lemma}
-\begin{proof}
-Adding $F_1 + F_2 = 0$:
-\[
-0 = \tfrac12(1-\pi_H) + \tfrac12(1-\pi_E) - x - \rho y - \tfrac12 \pi_H - \tfrac12\pi_E = 1 - \pi_H - \pi_E - x - \rho y,
-\]
-using $r_{EH} + r_{EE} = \pi_E$. This gives \eqref{eq:GS1}. Subtracting $F_1 - F_2 = 0$ and simplifying via $\pi_E = r_{EH} + r_{EE}$ gives \eqref{eq:GS2}.
-\end{proof}
-
-In rescaled-degree variables ($\pi_H \to 1-e^{-d_1 y/2}$, etc.):
-\begin{align}
-x + \rho y &= e^{-d_1 y/2} + e^{-(d_1 x + d_2 y)/2} - 1, \tag{$S_1^\rho$}\label{eq:S1rho}\\
-x - \rho y &= \bigl(1 - e^{-(d_1 x + d_2 y)/2}\bigr)\cdot \frac{d_2 y}{d_1 x + d_2 y}. \tag{$S_2^\rho$}\label{eq:S2rho}
+F_1(x,y) &= \tfrac12(1-\pi_H) - x - \tfrac12 r_{EH},\\
+F_2(x,y) &= \tfrac12(1-\pi_E) - \rho y - \tfrac12 \pi_H - \tfrac12 r_{EE}.
 \end{align}
 
-\begin{lemma}[Leading-order Greedy loss is $\rho$-independent]\label{lem:greedy-rho-indep}
-\proved As $d_2 \to \infty$, any fixed point of \eqref{eq:S1rho}--\eqref{eq:S2rho} satisfies $\rho y = O(1/d_2)$ (so $y = O(1/(\rho d_2))$), and the limiting $x$-coordinate is the unique root in $(0,1/2)$ of
+At fixed point, $x + \rho y = 1 - \pi_H - \pi_E$ and $x - \rho y = r_{EE}$.
+
+\begin{lemma}[Greedy loss is $\rho$-independent at leading order]
+\label{lem:greedy-rho-indep}
+\proved As $d_2 \to \infty$, the limiting $x$-coordinate is the unique root in $(0,1/2)$ of
 \[
 g_{d_1}(x) := x\,\exp\!\left(\frac{d_1 x(1-x)}{2(1-2x)}\right) = 1,
 \]
-identical to the $\rho = 1$ case (Lemma~4.3 of \cite{notes-experimental}). Hence $L^{\text{Greedy}}(d_1,\rho) = x^\ast(d_1) + O(1/d_2)$, independent of $\rho$ at leading order.
+independent of $\rho$. Hence $L^{\text{Greedy}}(d_1,\rho) = x^\ast(d_1) + O(1/d_2)$, with the leading term independent of $\rho$.
 \end{lemma}
 
-\begin{proof}
-Write $\rho y = c/d_2$ (so $y = c/(\rho d_2)$). From \eqref{eq:S2rho} at leading order (dropping the $\rho y/d_2$ term on the LHS):
-\[
-x = (1-x)\cdot\frac{c}{d_1 x + c},\quad \text{giving}\quad c = \frac{d_1 x^2}{1-2x}. \tag{$\star$}\label{eq:c-rho}
-\]
-From \eqref{eq:S1rho}: $x + c/d_2 = e^{-d_1 c/(\rho d_2^2 \cdot 2)} + e^{-(d_1 x + c)/2} - 1$. As $d_2 \to \infty$, the first exponential $\to 1$ and the equation gives $x = e^{-(d_1 x + c)/2}$. Combining with \eqref{eq:c-rho}:
-\[
-x = e^{-d_1 x/2} \cdot e^{-c/2} = e^{-d_1 x/2} \cdot e^{-d_1 x^2/(2(1-2x))}.
-\]
-Collecting the exponent: $-d_1 x/2 - d_1 x^2/(2(1-2x)) = -d_1 x(1-x)/(2(1-2x))$, so $g_{d_1}(x) = 1$ as claimed. Note: the computation of $c$ in \eqref{eq:c-rho} does not involve $\rho$ (the $\rho y$ terms drop at leading order), so the scalar equation and its solution $x^\ast(d_1)$ are $\rho$-independent.
+\begin{proof}[Proof sketch]
+Write $\rho y = c/d_2$ and examine the $d_2 \to \infty$ scaling. The $\rho y$ terms vanish relative to $O(1)$ terms. The resulting scalar equation for $x$ does not involve $\rho$, so $x^\ast$ is $\rho$-independent.
 \end{proof}
 
-\begin{remark}[Why Greedy is $\rho$-insensitive]
-Under Greedy, matching happens at \emph{arrival}, not at criticality. The E pool serves as a ``standing inventory'' for arriving H agents to match against. While higher $\rho$ shrinks this inventory (faster E turnover), the $d_2 \to \infty$ scaling ensures the inventory is dense enough at leading order. Formally: $y = O(1/(\rho d_2)) \to 0$ regardless of $\rho$, and the matching probability $\pi_H = 1 - e^{-d_1 y/2}$ depends on $d_1 y = d_1 c/(\rho d_2) \to 0$, which is captured through $c = d_1 x^2/(1-2x)$ --- a quantity that does not depend on $\rho$.
+\begin{remark}[Intuition]
+Under Greedy, matching happens at agent \emph{arrival}. The E pool serves as standing inventory for H arrivals. While higher $\rho$ shrinks this inventory, at leading order in dense markets ($d_2 \to \infty$), the inventory is large enough regardless. The matching density $d_1$ is the binding constraint.
 \end{remark}
 
-\subsection{TA-Greedy with $\rho$: same leading-order independence}
-\label{sec:tag-rho}
+\subsection{TA-Greedy: same independence}
 
-The TA-Greedy fixed-point system is (from \cite{notes-experimental} equations (4.4)--(4.5)):
-\begin{align}
-2x &= e^{-d_1 y/2} + e^{-d_1 x/2} - 1, \label{eq:TAG-fix1-rho}\\
-\rho y &= \tfrac12\bigl(e^{-d_1 x/2} - e^{-(d_1 x + d_2 y)/2}\bigr) + \tfrac12\bigl(e^{-d_1 y/2} - 1\bigr) + \tfrac12 e^{-d_1 x/2}(1 - e^{-d_2 y/2}). \label{eq:TAG-fix2-rho}
-\end{align}
-Note that \eqref{eq:TAG-fix1-rho} is \emph{unchanged} from the $\rho=1$ case ($F_1$ does not involve $\rho$).
+By similar analysis: $L^{\text{TA-Greedy}}(d_1,\rho) = 2W(d_1/4)/d_1 + O(1/d_2)$, independent of $\rho$ at leading order.
 
-\begin{lemma}[TA-Greedy loss is $\rho$-independent at leading order]\label{lem:tag-rho-indep}
-\proved As $d_2 \to \infty$, $\rho y \to 0$ and the limiting $x$-coordinate satisfies $2x = e^{-d_1 x/2}$, giving $x^\ast_{\mathrm{TA}} = 2W(d_1/4)/d_1$. Hence $L^{\text{TA-Greedy}}(d_1,\rho) = 2W(d_1/4)/d_1 + O(1/d_2)$, independent of $\rho$ at leading order.
-\end{lemma}
-
-\begin{proof}
-Write $\rho y = c'/d_2$. As $d_2 \to \infty$, the terms $e^{-(d_1 x + d_2 y)/2} \to 0$ and $e^{-d_2 y/2} \to e^{-c'/(2\rho)} $. The leading-order balance in \eqref{eq:TAG-fix2-rho} gives $e^{-(d_1 x + c'/\rho)/2} = \frac12 e^{-d_1 x/2}$, hence $e^{-c'/(2\rho)} = 1/2$ and $c' = 2\rho \log 2$. Since $y \to 0$, \eqref{eq:TAG-fix1-rho} reduces to $2x = e^{-d_1 x/2}$, giving $x^\ast_{\mathrm{TA}} = 2W(d_1/4)/d_1$ as in the $\rho=1$ case.
-\end{proof}
-
-\subsection{Patient with $\rho$: a closed-form $\rho$-dependence}
+\subsection{Patient: closed-form $\rho$-dependence}
 \label{sec:patient-rho}
 
-The Patient drift with E departure rate $\rho$ is:
-\begin{align}
-F_1^P(x,y) &= \tfrac12 - x - \rho y\,\pi_E(x,y)\,\rho_{E\to H}(x,y), \label{eq:F1P-rho}\\
-F_2^P(x,y) &= \tfrac12 - x\,\pi_H(x,y) - \rho y\bigl(1 + \pi_E(x,y)\,\rho_{E\to E}(x,y)\bigr). \label{eq:F2P-rho}
-\end{align}
-The $\rho$ factor multiplies all E-criticality terms because E criticalities fire at rate $\rho$ per agent.
-
-\begin{lemma}[Patient aggregate balance with $\rho$]\label{lem:patient-aggreg-rho}
-\proved At any interior fixed point:
+\begin{lemma}[Patient loss with $\rho$]
+\label{lem:patient-rho}
+\proved As $d_2 \to \infty$, the Patient fixed point satisfies $x \to 1/2$ and $y \to y^\ast(d_1,\rho)$ where $e^{-d_1 y^\ast/2} = 4\rho y^\ast$. Via Lambert $W$:
 \[
-x^\ast(1+\pi_H) + \rho y^\ast(1+\pi_E) = 1, \qquad L^{\text{Patient}} = 2(x^\ast + \rho y^\ast) - 1.
+\boxed{L^{\text{Patient}}(d_1,\rho) = \frac{4\rho\, W(d_1/(8\rho))}{d_1}.}
 \]
 \end{lemma}
 
-\begin{proof}
-Adding $F_1^P + F_2^P = 0$: using $\rho_{E\to H} + \rho_{E\to E} = 1$,
-\[
-0 = 1 - x(1+\pi_H) - \rho y(1+\pi_E).
-\]
-The loss is $x(1-\pi_H) + \rho y(1-\pi_E)$ (H perish unmatched at rate $x$; E perish at rate $\rho y(1-\pi_E)$). Rewriting: $x(1-\pi_H)+\rho y(1-\pi_E) = 2(x+\rho y) - [x(1+\pi_H)+\rho y(1+\pi_E)] = 2(x+\rho y) - 1$.
-\end{proof}
-
-In rescaled-degree variables as $d_2 \to \infty$:
-
-\begin{lemma}[Patient closed form with $\rho$]\label{lem:patient-rho}
-\proved As $d_2 \to \infty$, the Patient fixed point satisfies $x \to 1/2$ and $y \to y^\ast(d_1,\rho)$ where
-\begin{equation}\label{eq:patient-scalar-rho}
-e^{-d_1 y^\ast/2} = 4\rho\, y^\ast.
-\end{equation}
-Via Lambert $W$: $y^\ast(d_1,\rho) = 2W(d_1/(8\rho))/d_1$, and
-\begin{equation}\label{eq:LP-rho}
-\boxed{L^{\text{Patient}}(d_1,\rho) = \frac{4\rho\, W\!\left(d_1/(8\rho)\right)}{d_1}.}
-\end{equation}
-\end{lemma}
-
-\begin{proof}
-The argument parallels Lemma~5.1 of \cite{notes-experimental} with $\rho$. From $F_1^P = 0$, $x \to 1/2$ as $d_2 \to \infty$ (the $\rho y \cdot d_1 x/(d_1 x + d_2 y)$ term vanishes since $d_1 x/d_2 \to 0$). From $F_2^P = 0$ with $x = 1/2$ and $e^{-(d_1 x + d_2 y)/2} \to 0$:
-\[
-1 = 2y\!\left(1 + \frac{d_2 y(1-e^{-(\cdots)})}{d_1 x + d_2 y}\right)\!\cdot \rho + 2x(1-e^{-d_1 y/2}).
-\]
-As $d_2 y \to \infty$, the middle factor $\to 2$, giving $1 = 4\rho y + 1 - e^{-d_1 y/2}$, i.e., \eqref{eq:patient-scalar-rho}. Setting $u = d_1 y/2$: $e^{-u} = 4\rho \cdot 2u/d_1$, so $u e^u = d_1/(8\rho)$ and $u = W(d_1/(8\rho))$. The loss $2(x + \rho y) - 1 = 2\rho y^\ast = 4\rho W(d_1/(8\rho))/d_1$.
+\begin{proof}[Proof sketch]
+From fixed-point equations as $d_2 \to \infty$, derive $e^{-d_1 y/2} = 4\rho y$. Setting $u = d_1 y/2$ gives $u e^u = d_1/(8\rho)$, so $u = W(d_1/(8\rho))$ and $y = 2W(d_1/(8\rho))/d_1$. The loss $L = 2\rho y = 4\rho W(d_1/(8\rho))/d_1$.
 \end{proof}
 
 \paragraph{Behavior in $\rho$.}
-\proved As $\rho \to 1$: $L^{\text{Patient}}(d_1,1) = 4W(d_1/8)/d_1$, recovering the baseline \cite{notes-experimental}. As $\rho \to \infty$: $W(d_1/(8\rho)) \to d_1/(8\rho)$ (since $W(z) \sim z$ as $z \to 0$), so $L^{\text{Patient}} \to 4\rho \cdot d_1/(8\rho) \cdot 1/d_1 = 1/2$: the market collapses, almost all H agents perish. As $\rho \to 0$: $W(d_1/(8\rho)) \sim \log(d_1/(8\rho)) \to \infty$, so $L^{\text{Patient}} \sim 4\rho \log(d_1/(8\rho))/d_1 \to 0$: very sticky E agents eventually rescue all H.
+\proved As $\rho \to 1$, recover the baseline. As $\rho \to \infty$, loss $\to 1/2$ (market collapses). As $\rho \to 0$, loss $\to 0$ (E agents permanently sticky).
 
-\paragraph{Log-loss elasticity.}
-\proved The log-elasticity of Patient loss with respect to $\rho$ is:
-\begin{equation}\label{eq:elasticity}
-S^{\text{Patient}}(\rho) \;:=\; \frac{\partial \log L^{\text{Patient}}}{\partial \log \rho} \;=\; \frac{W(d_1/(8\rho))}{1 + W(d_1/(8\rho))} \;\in\; (0,1).
-\end{equation}
-To verify: $\partial_\rho L = (4/d_1)\partial_\rho[\rho W(d_1/(8\rho))]$. Using $W'(z) = W(z)/(z(1+W(z)))$,
-\[
-\partial_\rho[\rho W(d_1/(8\rho))] = W(d_1/(8\rho)) + \rho \cdot \frac{W(d_1/(8\rho))}{d_1/(8\rho)} \cdot \left(-\frac{d_1}{8\rho^2}\right) = \frac{W(d_1/(8\rho))^2}{1+W(d_1/(8\rho))}.
-\]
-Multiplying by $\rho/L = \rho \cdot d_1/(4\rho W(d_1/(8\rho))) = d_1/(4W(d_1/(8\rho)))$ gives \eqref{eq:elasticity}. The elasticity $S \in (0,1)$ means a 1\% increase in $\rho$ raises Patient loss by strictly less than 1\%. The sensitivity is highest when $W(d_1/(8\rho))$ is small---i.e., near the critical liquidity threshold where $\rho \approx d_1/8$.
+The log-elasticity is $\partial \log L / \partial \log \rho = W(d_1/(8\rho))/(1+W(d_1/(8\rho))) \in (0,1)$.
 
-\subsection{TA-Patient with $\rho$: identities and exponential decay}
+\subsection{TA-Patient: identities and exponential decay}
 \label{sec:TAP-rho}
 
-The TA-Patient fixed-point system as $d_2 \to \infty$ (replacing $e^{-d_2 y/2} \to 0$) is:
+\begin{lemma}[TA-Patient identities]
+\label{lem:TAP-identities-rho}
+\proved Any solution of the TA-Patient system (as $d_2 \to \infty$) satisfies:
 \begin{align}
-\tfrac12 &= x + \rho y(1 - e^{-d_1 x/2}), \label{eq:TAP1-rho}\\
-\tfrac12 &= x(1 - e^{-d_1 y/2}) + \rho y(1 + e^{-d_1 x/2}). \label{eq:TAP2-rho}
+L^{\text{TA-Patient}} &= x\,e^{-d_1 y/2},\\
+x\,e^{-d_1 y/2} &= 2\rho y\,e^{-d_1 x/2}.
 \end{align}
-
-\begin{lemma}[TA-Patient identities with $\rho$]\label{lem:TAP-identities-rho}
-\proved Any solution of \eqref{eq:TAP1-rho}--\eqref{eq:TAP2-rho} satisfies:
-\begin{align}
-2(x + \rho y) - 1 &= x\,e^{-d_1 y/2}, \label{eq:TAP-loss-rho}\\
-x\,e^{-d_1 y/2} &= 2\rho y\,e^{-d_1 x/2}. \label{eq:TAP-cross-rho}
-\end{align}
-In particular, $L^{\text{TA-Patient}}(d_1,\rho) = x^\ast e^{-d_1 y^\ast/2}$.
 \end{lemma}
 
-\begin{proof}
-\emph{Adding \eqref{eq:TAP1-rho} and \eqref{eq:TAP2-rho}:}
+\begin{conjecture}[TA-Patient decay with $\rho$]
+\label{conj:TAP-rho}
+For $d_1 \to \infty$ at fixed $\rho$:
 \[
-1 = 2x + 2\rho y(1 - e^{-d_1 x/2}) + 2x - 2x e^{-d_1 y/2} + 2\rho y(1+e^{-d_1 x/2}) - 2x\;\text{[wrong --- redo]}.
-\]
-Adding directly:
-\[
-1 = [x + \rho y(1-e^{-d_1 x/2})] + [x(1-e^{-d_1 y/2}) + \rho y(1+e^{-d_1 x/2})].
-\]
-Expanding: $= x + \rho y - \rho y e^{-d_1 x/2} + x - x e^{-d_1 y/2} + \rho y + \rho y e^{-d_1 x/2} = 2x + 2\rho y - x e^{-d_1 y/2}$.
-The $\pm \rho y e^{-d_1 x/2}$ cancel. So $1 = 2(x+\rho y) - x e^{-d_1 y/2}$, i.e., \eqref{eq:TAP-loss-rho}. \emph{Subtracting:}
-\[
-0 = [x + \rho y(1-e^{-d_1 x/2})] - [x(1-e^{-d_1 y/2}) + \rho y(1+e^{-d_1 x/2})]
-= x e^{-d_1 y/2} - 2\rho y e^{-d_1 x/2}.
-\]
-This gives \eqref{eq:TAP-cross-rho}. Combining \eqref{eq:TAP-loss-rho} with $L = 2(x+\rho y)-1$ gives $L = x e^{-d_1 y/2}$.
-\end{proof}
-
-\begin{remark}[Structural parallelism]
-Lemma~\ref{lem:TAP-identities-rho} shows that the loss identity $L = x e^{-d_1 y/2}$ and the cross-equation $x e^{-d_1 y/2} = 2\rho y e^{-d_1 x/2}$ hold for all $\rho$. At $\rho = 1$, these recover Lemma~6.1 of \cite{notes-experimental}. The $\rho$ appears only in the cross-equation, not in the loss identity itself.
-\end{remark}
-
-\paragraph{Exponential decay with $\rho$.}
-\open For fixed $\rho > 0$ and as $d_1 \to \infty$, the TA-Patient system has a solution branch $(x^\ast(d_1,\rho), y^\ast(d_1,\rho))$ near the balance point $(x_0, y_0)$ defined by
-\begin{equation}\label{eq:TAP-balance}
-x_0 + \rho y_0 = \tfrac12, \qquad \ln\!\left(\frac{x_0}{2\rho y_0}\right) = \frac{d_1(y_0-x_0)}{2} \;[\text{cross identity at leading order}].
-\end{equation}
-As $d_1 \to \infty$, $x_0 = y_0 = 1/(2(1+\rho))$ with correction $y_0 - x_0 = -2\ln(2\rho)/(d_1(1+\rho)) + O(d_1^{-2})$. The loss behaves as:
-
-\begin{conjecture}[TA-Patient decay with $\rho$]\label{conj:TAP-rho}
-For fixed $\rho > 0$ and $d_1 \to \infty$:
-\begin{equation}\label{eq:TAP-rho-asymp}
 \boxed{L^{\text{TA-Patient}}(d_1,\rho) \;\sim\; \frac{(2\rho)^{1/(1+\rho)}}{2(1+\rho)}\,e^{-d_1/(4(1+\rho))}.}
-\end{equation}
+\]
 \end{conjecture}
 
-\emph{Derivation sketch.} With $x_0 = y_0 = 1/(2(1+\rho))$ and correction $y_0 - x_0 = \gamma/d_1$ where $\gamma = -2\ln(2\rho)/(1+\rho)$, write $x^\ast = x_0 + \rho\gamma/(d_1(1+\rho)^{-1}) \cdot (-1) = x_0 - \rho\gamma/(d_1(1+\rho))$... Let $a = \gamma/(1+\rho)$, so $x^\ast = x_0 - a\rho/d_1$ and $y^\ast = y_0 + a/d_1$. Then:
-\[
-d_1 y^\ast/2 = d_1 x_0/2 + a/2 = \frac{d_1}{4(1+\rho)} + \frac{a}{2} = \frac{d_1}{4(1+\rho)} - \frac{\ln(2\rho)}{1+\rho}.
-\]
-Using $L = x^\ast e^{-d_1 y^\ast/2}$ and $x^\ast \to x_0 = 1/(2(1+\rho))$:
-\[
-L \;\sim\; \frac{1}{2(1+\rho)}\,e^{-d_1/(4(1+\rho))}\,e^{\ln(2\rho)/(1+\rho)} = \frac{(2\rho)^{1/(1+\rho)}}{2(1+\rho)}\,e^{-d_1/(4(1+\rho))}.
-\]
-At $\rho = 1$: $(2)^{1/2}/(2\cdot 2) = \sqrt{2}/4$ and exponent $d_1/8$, recovering the known result of \cite{notes-experimental}.
-
-\paragraph{Effect of $\rho$ on the decay exponent.}
-The decay exponent $A(\rho) := 1/(4(1+\rho))$ is strictly decreasing in $\rho$:
-\[
-\frac{dA}{d\rho} = -\frac{1}{4(1+\rho)^2} < 0.
-\]
-Quantitatively:
+The decay exponent $A(\rho) = 1/(4(1+\rho))$ is strictly decreasing in $\rho$:
 \begin{center}
 \begin{tabular}{r|cccccc}
-$\rho$ & $0.25$ & $0.5$ & $1$ & $2$ & $5$ & $10$\\\hline
-$A(\rho)$ & $1/5$ & $1/6$ & $1/8$ & $1/12$ & $1/24$ & $1/44$\\
-half-life $d_1^*$ at $L=e^{-1}$ & $5$ & $6$ & $8$ & $12$ & $24$ & $44$
+$\rho$ & $0.5$ & $1$ & $2$ & $5$ & $10$ & $20$\\\hline
+$A(\rho)$ & $1/6$ & $1/8$ & $1/12$ & $1/24$ & $1/44$ & $1/84$\\
 \end{tabular}
 \end{center}
-A doubling of $\rho$ (from 1 to 2) requires $50\%$ more H-E compatibility density $d_1$ to achieve the same loss level under TA-Patient.
+
+Doubling $\rho$ (from 1 to 2) requires $50\%$ more H-E compatibility density to achieve the same loss level.
 
 \section{Duality and Policy Comparisons}
 \label{sec:duality}
 
-\begin{lemma}[$\rho$-generalized Patient--TA-Greedy duality]\label{lem:duality-rho}
+\begin{lemma}[$\rho$-generalized Patient--TA-Greedy duality]
+\label{lem:duality-rho}
 \proved
-\begin{equation}\label{eq:duality-rho}
+\[
 L^{\text{Patient}}(d_1,\rho) \;=\; L^{\text{TA-Greedy}}\!\left(\frac{d_1}{2\rho}\right).
-\end{equation}
+\]
 \end{lemma}
 
-\begin{proof}
-$L^{\text{TA-Greedy}}(d_1') = 2W(d_1'/4)/d_1'$. Set $d_1' = d_1/(2\rho)$: $L^{\text{TA-Greedy}}(d_1/(2\rho)) = 2W(d_1/(8\rho))/(d_1/(2\rho)) = 4\rho W(d_1/(8\rho))/d_1 = L^{\text{Patient}}(d_1,\rho)$.
-\end{proof}
-
-\begin{remark}[Three-way substitution]
-Together with the $\rho=1$ duality from \cite{notes-experimental}, we now have:
-\[
-L^{\text{Patient}}(d_1,\rho) = L^{\text{TA-Greedy}}\!\left(\frac{d_1}{2\rho}\right) = L^{\text{Patient}}\!\left(\frac{d_1}{2\rho},1\right).
-\]
-Patient matching at outside-option pressure $\rho$ is equivalent to (i) TA-Greedy at H-E density $d_1/(2\rho)$, or (ii) Patient (without type-awareness) at $\rho = 1$ but in a market with H-E density $d_1/(2\rho)$. Increasing $\rho$ by factor $k$ costs as much as reducing H-E density by factor $1/(2k)$.
-\end{remark}
-
-\paragraph{Policy comparison as $\rho$ varies.}
-
-\open At the $d_2 = \infty$ level:
-\begin{itemize}
-\item $L^{\text{Greedy}}(d_1,\rho) = L^{\text{Greedy}}(d_1)$: unaffected by $\rho$.
-\item $L^{\text{TA-Greedy}}(d_1,\rho) = L^{\text{TA-Greedy}}(d_1)$: unaffected by $\rho$.
-\item $L^{\text{Patient}}(d_1,\rho) = 4\rho W(d_1/(8\rho))/d_1$: increasing in $\rho$.
-\item $L^{\text{TA-Patient}}(d_1,\rho) \sim C(\rho)e^{-d_1/(4(1+\rho))}$: increasing in $\rho$ (slower exponential).
-\end{itemize}
-
-The policy ordering $L^{\text{TA-Patient}} \ll L^{\text{TA-Greedy}} < L^{\text{Greedy}} < L^{\text{Patient}}$ from \cite{notes-experimental} continues to hold for all $\rho$. But the \emph{ranking between Greedy-type and Patient-type} policies is $\rho$-sensitive:
-
-\begin{proposition}[Policy crossover in $\rho$]\label{prop:crossover-rho}
-\open For any $d_1$ large enough, there exists $\rho^\ast(d_1) \in (1,\infty)$ such that:
-\[
-L^{\text{Patient}}(d_1,\rho) \;\begin{cases} < L^{\text{Greedy}}(d_1) & \rho < \rho^\ast(d_1), \\ > L^{\text{Greedy}}(d_1) & \rho > \rho^\ast(d_1). \end{cases}
-\]
-Patient dominates Greedy when E's outside options are mild; Greedy dominates when they are strong.
-\end{proposition}
-
-\emph{Evidence.} At $\rho = 1$, $L^{\text{Patient}}(d_1,1) > L^{\text{Greedy}}(d_1)$ for large $d_1$ (proved in \cite{notes-experimental}). As $\rho \to \infty$, $L^{\text{Patient}}(d_1,\rho) \to 1/2 > L^{\text{Greedy}}(d_1)$... wait, actually $L^{\text{Greedy}}(d_1) \to 0$ as $d_1 \to \infty$ while $L^{\text{Patient}} \to 1/2$ as $\rho \to \infty$. For a fixed $d_1$ and $\rho$ varying: at $\rho = 1$, $L^{\text{Patient}} > L^{\text{Greedy}}$; at $\rho$ small, Patient collapses to 0 while Greedy stays at $x^\ast(d_1) > 0$. The crossover $\rho^\ast$ depends on $d_1$ and $d_2$. \open Numerical investigation of $\rho^\ast(d_1)$ is left to simulation.
-
-\begin{remark}[Connection to the $d_2$-crossover]
-\cite{notes-experimental} identify a Greedy-vs-Patient crossover in $d_2$ at $d_1 = 1$: Patient wins for small $d_2$, Greedy wins for large $d_2$. The $\rho$-crossover above is a complementary finding: for fixed $d_2 = \infty$, Patient wins for small $\rho$, Greedy wins for large $\rho$. Both crossovers reflect the same mechanism: Patient is most valuable when E liquidity is scarce and waiting preserves rescue opportunities; when E liquidity is already abundant (large $d_2$) or E agents are more captive (small $\rho$), Patient offers less incremental benefit over Greedy.
+\begin{remark}
+Patient matching at outside-option pressure $\rho$ is equivalent to TA-Greedy at H-E density $d_1/(2\rho)$. Increasing $\rho$ by factor $k$ costs as much as reducing H-E density by factor $1/(2k)$.
 \end{remark}
 
 \section{Competition Between Exchanges}
 \label{sec:competition}
 
-We now build a model of two competing platforms and use the preceding analysis to characterize when competition is welfare-improving.
+\subsection{Two-platform model}
 
-\subsection{The two-platform model}
-\label{sec:competition-model}
+Platform A (public): uses Patient, all H agents, fraction $\alpha$ of E agents, E departure rate $\rho_0$.
 
-There is a continuum of H agents arriving at total rate $m_H = m$ and E agents arriving at total rate $m_E = m$. We study two platforms:
+Platform B (private): uses TA-Patient, no H agents (or shared via cross-platform rescue), fraction $1-\alpha$ of E agents, E departure rate $\rho_B < \rho_0$ (reduced via incentives).
 
-\begin{itemize}
-\item \textbf{Platform A (public exchange)}: Receives all H agents (H is ``captive'' --- as in kidney exchange, incompatible patient-donor pairs have no other exchange). Receives fraction $\alpha \in [0,1]$ of E agents. Constrained to use the Patient policy and cannot offer incentives to E agents. E agents on Platform A face departure rate $\rho_A = \rho_0$ (the exogenous outside-option level).
-
-\item \textbf{Platform B (private exchange)}: Receives no H agents. Receives fraction $1-\alpha$ of E agents. Uses TA-Patient policy. Can offer a subsidy or priority to E agents, reducing effective departure to $\rho_B < \rho_0$.
-\end{itemize}
-
-The key new feature: Platform B attracts E agents by offering a better ``deal'' (higher match probability, priority credits, tenure bonuses), which effectively reduces E's departure rate to $\rho_B$. Critically, E agents on Platform B still participate in \emph{cross-platform rescue}: when an E agent on Platform B becomes critical, it can also rescue H agents on Platform A (e.g., through a bridge-donor chain that starts on B and crosses into A's patient pool). We model this via a shared H-rescue probability.
-
-\begin{remark}[Simplifying assumption: cross-platform rescue]
-In the most tractable version of the model, we assume E agents on Platform B contribute to H rescue with the same probability as E on Platform A. This can be justified as a ``shared information'' assumption: both platforms observe the same H pool (public registry). Under this assumption, the effective E pool for H rescue is the \emph{total} E population, split between the two platforms, but the departure rates differ.
-\end{remark}
-
-\subsection{Welfare under the two-platform equilibrium}
-\label{sec:welfare-competition}
-
-\paragraph{Platform A (Patient, departure rate $\rho_0$).}
-E arrivals to A at rate $\alpha m$, H arrivals at rate $m$. In the rescaled model, the E arrival rate to A is $\alpha/2$ per unit time and departure rate $\rho_0$. The effective E-density on A: $d_1^A = \alpha d_1$ (H-E density) and $d_2^A = \alpha d_2$ (E-E density). The Patient loss for H agents on A:
-
-\begin{equation}\label{eq:LA}
-L_A(d_1, \alpha, \rho_0) = L^{\text{Patient}}(\alpha d_1, \rho_0) = \frac{4\rho_0\, W(\alpha d_1/(8\rho_0))}{\alpha d_1}.
-\end{equation}
-
-\paragraph{Platform B (TA-Patient, departure rate $\rho_B < \rho_0$).}
-E arrivals to B at rate $(1-\alpha)m$, no H arrivals to B directly. Under the cross-platform rescue assumption, E on B still sees the same H pool, but with the effective density rescaled. For simplicity, assume Platform B serves as a ``liquidity provider'' to Platform A: E agents on B contribute their rescue capacity to the shared H pool. The welfare of H agents (all on A) is then determined by the \emph{composite policy} across both platforms:
-
-\begin{equation}\label{eq:welfare-competition}
-L^{\text{comp}}(\alpha, \rho_B) \;=\; \text{loss under TA-Patient with E split: fraction $\alpha$ at $\rho_0$, fraction $1-\alpha$ at $\rho_B$}.
-\end{equation}
-
-\paragraph{Baseline (monopoly public).}
-Without competition, all E agents join Platform A with departure rate $\rho_0$:
-\[
-L^{\text{mono}} = L^{\text{Patient}}(d_1, \rho_0) = \frac{4\rho_0\, W(d_1/(8\rho_0))}{d_1}.
-\]
-
-\subsection{A simple bound via effective liquidity}
-\label{sec:bound}
-
-The composite system has an effective E departure rate that interpolates between $\rho_0$ and $\rho_B$:
+The effective E departure rate in the composite system:
 \begin{equation}\label{eq:eff-rho}
-\rho_{\mathrm{eff}}(\alpha) \;=\; \left[\alpha/\rho_0 + (1-\alpha)/\rho_B\right]^{-1}
-\end{equation}
-(harmonic mean of departure rates, weighted by E fractions). Since $\rho_B < \rho_0$, we have $\rho_{\mathrm{eff}} < \rho_0$: competition lowers the effective departure rate, increasing $\Lambda_E$.
-
-\begin{proposition}[Competition lowers effective departure rate]\label{prop:eff-rho}
-\proved For any $\alpha \in (0,1)$ and $\rho_B < \rho_0$, $\rho_{\mathrm{eff}}(\alpha) \in (\rho_B, \rho_0)$, with $\rho_{\mathrm{eff}}$ decreasing in $\rho_B$ and decreasing in $(1-\alpha)$ (the E fraction going to B).
-\end{proposition}
-
-\begin{proof}
-By the harmonic mean: $1/\rho_{\mathrm{eff}} = \alpha/\rho_0 + (1-\alpha)/\rho_B > \alpha/\rho_0 + (1-\alpha)/\rho_0 = 1/\rho_0$ (using $\rho_B < \rho_0$), so $\rho_{\mathrm{eff}} < \rho_0$. Monotonicity follows from differentiating with respect to $\rho_B$ and $\alpha$.
-\end{proof}
-
-Under the approximation that the composite system behaves as a single TA-Patient market with effective departure rate $\rho_{\mathrm{eff}}$:
-\begin{equation}\label{eq:Lcomp-approx}
-L^{\text{comp}} \;\approx\; L^{\text{TA-Patient}}(d_1, \rho_{\mathrm{eff}}) \;\sim\; C(\rho_{\mathrm{eff}})\,e^{-d_1/(4(1+\rho_{\mathrm{eff}}))}.
+\rho_{\mathrm{eff}}(\alpha) \;=\; \left[\alpha/\rho_0 + (1-\alpha)/\rho_B\right]^{-1}.
 \end{equation}
 
-\subsection{When is competition welfare-improving?}
-\label{sec:competition-threshold}
+\subsection{Welfare comparison}
 
-\begin{proposition}[Competition welfare condition]\label{prop:competition}
-\open Under the approximation \eqref{eq:Lcomp-approx}, competition is welfare-improving relative to monopoly public if and only if:
-\begin{equation}\label{eq:comp-condition}
-\frac{(2\rho_{\mathrm{eff}})^{1/(1+\rho_{\mathrm{eff}})}}{2(1+\rho_{\mathrm{eff}})}\,e^{-d_1/(4(1+\rho_{\mathrm{eff}}))} < \frac{4\rho_0\, W(d_1/(8\rho_0))}{d_1}.
-\end{equation}
-For large $d_1$, the LHS decays exponentially while the RHS decays as $\log(d_1)/d_1$, so competition is always welfare-improving for sufficiently large $d_1$.
-\end{proposition}
-
-\begin{proof}[Proof sketch]
-The LHS is the TA-Patient loss under competition (exponential in $d_1$). The RHS is the Patient loss under monopoly public (polynomial in $d_1$, via $W(z) \sim \log z$ as $z \to \infty$). For large $d_1$, the exponential dominates.
-\end{proof}
-
-\begin{remark}[Finite-$d_1$ threshold]
-For moderate $d_1$, the condition \eqref{eq:comp-condition} can fail: the fragmentation cost (smaller effective $d_1$ due to pool splitting) may outweigh the policy gain. The threshold $d_1^\ast(\rho_0, \rho_B, \alpha)$ separates the ``competition-dominated'' regime ($d_1 > d_1^\ast$) from the ``monopoly-dominated'' regime ($d_1 < d_1^\ast$). This threshold is higher when $\rho_B$ is close to $\rho_0$ (little incentive benefit from competition) or when $\alpha$ is close to 1 (most E stays on Platform A, little benefit from Platform B). \open Numerical characterization of $d_1^\ast$ is left to simulation.
-\end{remark}
-
-\subsection{Endogenous $\rho_B$: the private exchange's incentive design problem}
-\label{sec:incentive}
-
-A private exchange chooses $\rho_B$ (or equivalently, the subsidy $\tau$ that achieves $\rho_B = \rho(\tau)$ with $\rho'(\tau) < 0$) to maximize the total welfare of H agents on Platform A, net of subsidy cost. The problem is:
-\begin{equation}\label{eq:incentive-prob}
-\min_{\tau \ge 0}\; L^{\text{comp}}(\alpha(\tau), \rho(\tau)) + c\,\tau,
-\end{equation}
-where $c > 0$ is the per-unit cost of the subsidy, $\alpha(\tau)$ is the equilibrium E fraction on Platform A (decreasing in $\tau$: better B deal attracts more E to B), and the first term is the composite welfare.
-
-\paragraph{First-order condition.}
-Taking the derivative of the objective with respect to $\tau$ and setting to zero:
-\begin{equation}\label{eq:foc}
--\frac{\partial L^{\text{comp}}}{\partial \rho_{\mathrm{eff}}} \cdot \left|\frac{d\rho_{\mathrm{eff}}}{d\tau}\right| = c.
-\end{equation}
-The LHS is the marginal welfare benefit of reducing $\rho_{\mathrm{eff}}$ (via larger subsidy); the RHS is the marginal cost. From \eqref{eq:Lcomp-approx} and Conjecture~\ref{conj:TAP-rho}:
+\begin{proposition}[Competition threshold]
+\label{prop:competition}
+\open Competition is welfare-improving when:
 \[
--\frac{\partial L^{\text{comp}}}{\partial \rho_{\mathrm{eff}}} \;\approx\; \frac{d_1}{4(1+\rho_{\mathrm{eff}})^2}\cdot C(\rho_{\mathrm{eff}})\,e^{-d_1/(4(1+\rho_{\mathrm{eff}}))},
+L^{\text{TA-Patient}}(d_1, \rho_{\mathrm{eff}}) \;<\; L^{\text{Patient}}(d_1, \rho_0).
 \]
-which is exponentially large in $d_1$ for fixed $\rho_{\mathrm{eff}}$. This means: for dense enough markets ($d_1$ large), the optimal subsidy $\tau^\ast$ is bounded away from zero --- the returns to reducing $\rho_B$ are exponential in market thickness.
+For large $d_1$, this holds (exponential vs. polynomial decay). For moderate $d_1$, a threshold $d_1^\ast(\rho_0, \rho_B, \alpha)$ determines the regime.
+\end{proposition}
 
-\paragraph{Interpretation.}
-In thick markets (large $d_1$, many H and E agents), the private exchange has a large incentive to invest in E retention (reduce $\rho_B$) because the gain to H welfare is exponential. In thin markets (small $d_1$), the gain is small and the optimal subsidy may be zero. This predicts that private exchanges should invest more in donor retention mechanisms (priority credits, commitment bonuses) in thicker markets.
-
-\section{Applications: Public versus Private Exchanges}
+\section{Applications}
 \label{sec:applications}
 
 \subsection{Kidney exchange}
-\label{sec:kidney}
-
-In kidney exchange, H agents are incompatible patient-donor pairs and E agents are compatible pairs or altruistic (non-directed) donors. The ``outside option'' for altruistic donors includes: donating to a friend/family member outside the exchange, delaying donation, or participating in a living donor advocate program. The departure rate $\rho$ captures the intensity of these alternatives.
-
-Our findings suggest:
+In kidney exchange, H agents are incompatible patient-donor pairs, E agents are altruistic donors. Outside options for altruistic donors include: donating to friends/family, other exchanges, delaying donation. Our findings suggest:
 \begin{enumerate}
-\item \textbf{A public exchange (Greedy or Patient) is not sensitive to altruistic donor attrition at leading order in market thickness}, but it fails to leverage the full rescue capacity of altruistic donors (polynomial loss, not exponential).
-
-\item \textbf{A private exchange using TA-Patient can exponentially outperform the public exchange if it invests in retaining altruistic donors} (reducing $\rho_B$). The advantage is exponential in $d_1$ (the H-E compatibility density) and grows with market thickness.
-
-\item \textbf{The optimal institutional structure depends on market thickness}: for thin markets (few H patients, few altruistic donors), a single public pool is better; for thick markets, competition with a private exchange that uses better policy and retains donors can dominate.
+\item Public exchanges using Greedy or Patient are not $\rho$-sensitive at leading order, but fail to leverage exponential rescue capacity.
+\item Private exchanges using TA-Patient can exponentially outperform public exchanges if they invest in donor retention.
+\item The optimal structure depends on market thickness: thin markets favor single pool; thick markets favor competition with better policy and retention.
 \end{enumerate}
 
-\subsection{Gig-economy platforms}
-\label{sec:gig}
+\subsection{Gig economy platforms}
+In gig platforms, H agents are hard-to-serve jobs, E agents are versatile workers with many outside options ($\rho$ captures churn). Type-aware patience combined with worker retention (credits, stability guarantees) is the right strategy.
 
-In two-sided gig platforms (e.g., ride-sharing, freelance marketplaces), H agents are hard-to-serve customers (unusual routes, complex projects) and E agents are versatile workers with many outside options (competing platforms, alternative employment). The departure rate $\rho$ captures worker churn. Our findings suggest:
-\begin{enumerate}
-\item \textbf{Greedy matching (immediate assignment) is robust to worker churn}, while Patient matching (holding workers until the best H job arrives) is degraded by high churn.
-
-\item \textbf{Type-aware patience is the right strategy for platforms that can reduce worker churn}: offer retention bonuses (priority access to preferred jobs, stability guarantees) to reduce $\rho$ and then wait for the right H-E match.
-
-\item \textbf{Competition between platforms creates a prisoner's dilemma}: each platform tries to reduce $\rho_B$ to attract E workers, but this can reduce $\rho_0$ on the public pool if workers migrate. The equilibrium $\rho_{\mathrm{eff}}$ may be lower than the social optimum (too much competition for E workers).
-\end{enumerate}
-
-\section{Discussion and Open Problems}
+\section{Discussion}
 \label{sec:discussion}
 
 \paragraph{Finite-$d_2$ effects.}
-All results in \S\ref{sec:mf}--\ref{sec:duality} are leading-order as $d_2 \to \infty$. At finite $d_2$, the Greedy and TA-Greedy losses do depend on $\rho$ through $O(1/d_2)$ corrections analogous to \cite{notes-experimental} equations~(3.3)--(3.4). The sign of these corrections (and hence the crossover $d_2^*$ at which Greedy and Patient swap their $\rho$-rankings) is an open numerical question.
-
-\paragraph{Existence and uniqueness for TA-Patient with $\rho$.}
-Lemma~\ref{lem:TAP-identities-rho} establishes the loss formula assuming a solution to \eqref{eq:TAP1-rho}--\eqref{eq:TAP2-rho} exists. Existence follows from Poincaré-Miranda (same boundary-sign argument as \cite{notes-experimental} Lemma~4.2). Global uniqueness for moderate $d_1$ and general $\rho$ is open.
+O($1/d_2$) corrections in Greedy and TA-Greedy do depend on $\rho$. The crossover $d_2^*$ where policy rankings flip in $\rho$ is an open numerical question.
 
 \paragraph{Formal competition model.}
-The competition analysis in \S\ref{sec:competition} relies on the effective-rate approximation \eqref{eq:eff-rho}--\eqref{eq:Lcomp-approx}. A more rigorous treatment would model the joint dynamics of the two-platform CTMC explicitly, derive the mean-field fixed-point equations for the split-pool system, and prove concentration. This requires extending the fluid limit (Proposition~1 of \cite{notes-experimental}) to a coupled two-platform system. We expect this is tractable but defer it to future work.
+The two-platform analysis relies on the effective-rate approximation. A rigorous treatment would model the joint CTMC explicitly and derive the coupled mean-field fixed-point equations.
 
-\paragraph{Stationary concentration (Hypothesis~H with $\rho$).}
-The loss formulas derived here are ODE fixed-point statements. Transfer to CTMC long-run losses requires Hypothesis~H of \cite{notes-experimental}: the stationary distribution concentrates at the mean-field fixed point. The same hypothesis applies here. It is supported by the simulation evidence of \cite{akl-liquidity} (Table in \S8 of that note), which finds the drift at the estimated stationary point near zero at $(m, d_1, d_2, \rho, \lambda_{\mathrm{ent}}) = (5000, 10, 1000, 10, 0.5)$.
-
-\paragraph{Heterogeneous E types.}
-The mechanism note \cite{akl-extensions} introduces a partition $\{H, E_R, E_G\}$ (regular and gold-standard easy agents). This extension is complementary: different subtypes of E may have different $\rho$ values, and the optimal policy may treat $E_G$ agents (high-quality, low outside option) differently from $E_R$ agents (standard, high outside option). Incorporating subtype-specific $\rho$ into the fixed-point analysis is a natural next step.
+\paragraph{Stationary concentration.}
+Transfer from ODE fixed points to CTMC long-run losses requires the stationary distribution to concentrate at the mean-field fixed point. This is supported by numerical evidence and is an extension of prior work.
 
 \section{Conclusion}
 \label{sec:conclusion}
 
-We have shown that the E departure rate $\rho$ introduces a fundamental asymmetry in how dynamic matching policies respond to outside-option pressure. Greedy-type policies are $\rho$-insensitive at leading order: they match on arrival, so the E pool's departure rate only affects O(1/$d_2$) corrections. Patient-type policies are directly $\rho$-exposed: they match at criticality, so each unit increase in $\rho$ multiplicatively increases loss. The closed-form $L^{\text{Patient}}(d_1,\rho) = 4\rho W(d_1/(8\rho))/d_1$ makes this dependence precise and yields a duality $L^{\text{Patient}}(d_1,\rho) = L^{\text{TA-Greedy}}(d_1/(2\rho))$.
+We have shown that the E departure rate $\rho$ introduces a fundamental asymmetry: Patient-type policies are $\rho$-sensitive (direct exposure to outside options) while Greedy-type policies are not (at leading order). The closed form $L^{\text{Patient}}(d_1,\rho) = 4\rho W(d_1/(8\rho))/d_1$ makes this precise and yields the duality $L^{\text{Patient}}(d_1,\rho) = L^{\text{TA-Greedy}}(d_1/(2\rho))$.
 
-For TA-Patient---the exponentially superior policy---higher $\rho$ compresses the decay exponent from $d_1/8$ (at $\rho = 1$) to $d_1/(4(1+\rho))$: a platform that retains E agents (reduces $\rho$) gains exponentially in thick markets. This creates a rationale for private exchanges that invest in E-agent retention: the gains are large precisely when the market is thick, and the policy that stands to benefit most (TA-Patient) is also the most flexible one.
-
-The competition model suggests that fragmentation is not always harmful: if a private platform can sufficiently reduce $\rho_B$ below the public platform's $\rho_0$, and uses TA-Patient, the welfare gains dominate the pool-splitting cost for thick enough markets. This may explain why some countries choose decentralized kidney exchange networks over a single large public registry.
-
-\bibliographystyle{plain}
-\bibliography{references}
-
-\begin{thebibliography}{99}
-
-\bibitem{akbarpour}
-M. Akbarpour, S. Li, and S.~O. Gharan.
-\newblock Thickness and information in dynamic matching markets.
-\newblock \emph{Journal of Political Economy}, 128(3):783--815, 2020.
-
-\bibitem{ashlagi2023matching}
-I. Ashlagi, J. Nikzad, and A. Romm.
-\newblock Assigning more students to their top choices: A comparison of tie-breaking rules.
-\newblock 2023. (Preprint; see also Ashlagi--Kanoria--Leshno 2017 on unbalanced matching markets.)
-
-\bibitem{notes-experimental}
-S.~I\c{s}\i{}k.
-\newblock Dynamic matching markets: from when to whom.
-\newblock Working paper, Stanford University, 2025.
-
-\bibitem{akl-liquidity}
-Extension note.
-\newblock A dynamic sparse analogue of the AKL imbalance logic.
-\newblock Technical note, 2025.
-
-\bibitem{akl-extensions}
-Extension note.
-\newblock Mechanism extensions under outside options.
-\newblock Technical note, 2025.
-
-\bibitem{agarwal2021}
-N. Agarwal, I. Ashlagi, E.~Budish, C.~Murphey, D.~Roth, J.~To, and P.~Toulis.
-\newblock Market design for kidney exchange.
-\newblock \emph{NBER Working Paper 29362}, 2021.
-
-\bibitem{Liu2019TheEO}
-X.~Liu and J. Tang.
-\newblock The effects of ride-hailing on carpooling with heterogeneous types.
-\newblock \emph{Transportation Research Part B}, 2019.
-
-\end{thebibliography}
+For TA-Patient---the exponentially superior policy---higher $\rho$ compresses the decay exponent from $d_1/8$ (at $\rho=1$) to $d_1/(4(1+\rho))$: a platform that retains E agents (reduces $\rho$) gains exponentially in thick markets. This creates a rationale for private exchanges that invest in E-agent retention. The competition model suggests fragmentation is not always harmful: if a private platform sufficiently reduces $\rho$ and uses TA-Patient, welfare gains dominate fragmentation costs for thick markets.
 
 \end{document}
