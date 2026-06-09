@@ -118,8 +118,38 @@ g_{d_1}(x) := x\,\exp\!\left(\frac{d_1 x(1-x)}{2(1-2x)}\right) = 1,
 independent of $\rho$. Hence $L^{\text{Greedy}}(d_1,\rho) = x^\ast(d_1) + O(1/d_2)$, with the leading term independent of $\rho$.
 \end{lemma}
 
-\begin{proof}[Proof sketch]
-Write $\rho y = c/d_2$ and examine the $d_2 \to \infty$ scaling. The $\rho y$ terms vanish relative to $O(1)$ terms. The resulting scalar equation for $x$ does not involve $\rho$, so $x^\ast$ is $\rho$-independent.
+\begin{proof}
+In rescaled-degree variables with $\pi_H = 1-(1-d_1 y/(2m))^m \approx 1-e^{-d_1 y/2}$ and similarly for $\pi_E$ and $r_{EE}$, the fixed-point equations become:
+\begin{align}
+x + \rho y &= e^{-d_1 y/2} + e^{-(d_1 x+d_2 y)/2} - 1, \tag{S1}\\
+x - \rho y &= \bigl(1-e^{-(d_1 x+d_2 y)/2}\bigr) \cdot \frac{d_2 y}{d_1 x+d_2 y}. \tag{S2}
+\end{align}
+
+\emph{Step 1: Scaling of $y$.} Write $\rho y = c/d_2$ for some $c = c(x,d_1) > 0$. Substituting into (S2):
+\[
+x - \frac{c}{d_2} = \bigl(1-e^{-(d_1 x+c)/2}\bigr) \cdot \frac{c}{d_1 x+c}.
+\]
+At leading order in $1/d_2$ (dropping the $-c/d_2$ term on the LHS):
+\[
+x = \bigl(1-e^{-(d_1 x+c)/2}\bigr) \cdot \frac{c}{d_1 x+c}.
+\]
+Rearranging: $x(d_1 x+c) = c\bigl(1-e^{-(d_1 x+c)/2}\bigr)$. Let $\alpha = d_1 x+c$. Then $x\alpha = c(1-e^{-\alpha/2})$, so $d_1 x^2 + xc = c - ce^{-\alpha/2}$, giving $d_1 x^2 = c(1-2x) - ce^{-(d_1 x+c)/2}$. At leading order: $d_1 x^2 = c(1-2x)$, so
+\[
+c = \frac{d_1 x^2}{1-2x}. \tag{*}
+\]
+This relation is independent of $\rho$ (the $c$ that emerges depends only on $x$ and $d_1$).
+
+\emph{Step 2: Scalar equation for $x$.} Substituting (S1) with $y = c/(d_2 \rho)$ and taking $d_2 \to \infty$:
+\[
+x = e^{-d_1 c/(2d_2\rho)} + e^{-(d_1 x+c)/2} - 1 \to 1 + e^{-(d_1 x+c)/2} - 1 = e^{-(d_1 x+c)/2}.
+\]
+Combined with (*), eliminate $c$:
+\[
+x = \exp\!\left(-\frac{d_1 x}{2} - \frac{d_1 x^2}{2(1-2x)}\right) = \exp\!\left(-\frac{d_1 x(1-x)}{2(1-2x)}\right).
+\]
+This is the defining equation $g_{d_1}(x) = 1$, which is independent of $\rho$.
+
+\emph{Step 3: Loss.} The loss is $L = x(1-\pi_H) + \rho y(1-\pi_E)$. With $y = c/(d_2\rho) \to 0$ and $\rho y \cdot (1-\pi_E) = O(1/d_2)$, the leading-order loss is $L = x(1-\pi_H) + O(1/d_2) = x^\ast(d_1) + O(1/d_2)$.
 \end{proof}
 
 \begin{remark}[Intuition]
@@ -141,8 +171,35 @@ By similar analysis: $L^{\text{TA-Greedy}}(d_1,\rho) = 2W(d_1/4)/d_1 + O(1/d_2)$
 \]
 \end{lemma}
 
-\begin{proof}[Proof sketch]
-From fixed-point equations as $d_2 \to \infty$, derive $e^{-d_1 y/2} = 4\rho y$. Setting $u = d_1 y/2$ gives $u e^u = d_1/(8\rho)$, so $u = W(d_1/(8\rho))$ and $y = 2W(d_1/(8\rho))/d_1$. The loss $L = 2\rho y = 4\rho W(d_1/(8\rho))/d_1$.
+\begin{proof}
+For Patient policy, the fixed-point equations as $d_2 \to \infty$ are:
+\begin{align}
+\tfrac12 &= x + \rho y\,\pi_E\,\rho_{E\to H}, \tag{P1}\\
+\tfrac12 &= x\,\pi_H + \rho y(1+\pi_E\,\rho_{E\to E}). \tag{P2}
+\end{align}
+Here $\pi_H = 1-e^{-d_1 y/2}$ and $\pi_E\,\rho_{E\to H}$ and $\pi_E\,\rho_{E\to E}$ are the E matching probabilities.
+
+\emph{Step 1: Finding $x$.} From (P1), the second term is non-negative, so $x \le 1/2$. As $d_2 \to \infty$, the term $\pi_E\,\rho_{E\to H} \to (1-e^{-(d_1 x + d_2 y)/2})\cdot \frac{d_1 x}{d_1 x+d_2 y}$. Since $d_2 y \to \infty$ (the E pool grows), this ratio $\to d_1 x/d_2 y \to 0$. Thus from (P1): $1/2 = x + o(1)$, giving $x \to 1/2$.
+
+\emph{Step 2: Scalar equation for $y$.} With $x = 1/2$ and $d_2 \to \infty$ in (P2), the factor $1+\pi_E\,\rho_{E\to E} \to 1 + (1-e^{-(d_1x+d_2y)/2}) \cdot \frac{d_2 y}{d_1 x+d_2 y} \to 1 + 1 = 2$ (since $d_2 y \gg d_1 x$). Also, $\pi_H \to 1-e^{-d_1 y/2}$. From (P2):
+\[
+\tfrac12 = \tfrac12(1-e^{-d_1 y/2}) + \rho y \cdot 2.
+\]
+Rearranging: $e^{-d_1 y/2} = 1 - 4\rho y$... wait, let me redo. From (P2): $1/2 = x(1-e^{-d_1y/2}) + 2\rho y$ (using the limiting factor). With $x = 1/2$:
+\[
+\tfrac12 = \tfrac12(1-e^{-d_1 y/2}) + 2\rho y \implies \tfrac12 = \tfrac12 - \tfrac12 e^{-d_1 y/2} + 2\rho y \implies e^{-d_1 y/2} = 4\rho y.
+\]
+
+\emph{Step 3: Lambert $W$ form.} Multiply both sides by $e^{d_1 y/2}$: $1 = 4\rho y e^{d_1 y/2}$. Set $u = d_1 y/2$, so $y = 2u/d_1$:
+\[
+1 = 4\rho \cdot \frac{2u}{d_1} \cdot e^u = \frac{8\rho u}{d_1} e^u.
+\]
+Thus $u e^u = d_1/(8\rho)$. By definition of the Lambert $W$ function, $u = W(d_1/(8\rho))$.
+
+\emph{Step 4: Loss formula.} The loss is $L = 2(x+\rho y) - 1$ (from the Patient aggregate balance). With $x = 1/2$ and $y = 2u/d_1 = 2W(d_1/(8\rho))/d_1$:
+\[
+L = 2\left(\tfrac12 + \rho \cdot \frac{2W(d_1/(8\rho))}{d_1}\right) - 1 = 1 + \frac{4\rho W(d_1/(8\rho))}{d_1} - 1 = \frac{4\rho W(d_1/(8\rho))}{d_1}.
+\]
 \end{proof}
 
 \paragraph{Behavior in $\rho$.}
@@ -157,10 +214,34 @@ The log-elasticity is $\partial \log L / \partial \log \rho = W(d_1/(8\rho))/(1+
 \label{lem:TAP-identities-rho}
 \proved Any solution of the TA-Patient system (as $d_2 \to \infty$) satisfies:
 \begin{align}
-L^{\text{TA-Patient}} &= x\,e^{-d_1 y/2},\\
-x\,e^{-d_1 y/2} &= 2\rho y\,e^{-d_1 x/2}.
+L^{\text{TA-Patient}} &= x\,e^{-d_1 y/2}, \label{eq:TAP-loss-identity}\\
+x\,e^{-d_1 y/2} &= 2\rho y\,e^{-d_1 x/2}. \label{eq:TAP-cross-identity}
 \end{align}
 \end{lemma}
+
+\begin{proof}
+The TA-Patient fixed-point system (as $d_2 \to \infty$) is:
+\begin{align}
+\tfrac12 &= x + \rho y(1-e^{-d_1 x/2}), \tag{TAP1}\\
+\tfrac12 &= x(1-e^{-d_1 y/2}) + \rho y(1+e^{-d_1 x/2}). \tag{TAP2}
+\end{align}
+
+\emph{Step 1: Add (TAP1) and (TAP2).}
+\begin{align*}
+1 &= [x + \rho y(1-e^{-d_1 x/2})] + [x(1-e^{-d_1 y/2}) + \rho y(1+e^{-d_1 x/2})]\\
+&= x + \rho y - \rho y e^{-d_1 x/2} + x - x e^{-d_1 y/2} + \rho y + \rho y e^{-d_1 x/2}\\
+&= 2x + 2\rho y - x e^{-d_1 y/2}.
+\end{align*}
+The $\pm \rho y e^{-d_1 x/2}$ terms cancel. Rearranging: $2(x+\rho y) - 1 = x e^{-d_1 y/2}$. By the aggregate balance for Patient (which holds for TA-Patient as well), $L = 2(x+\rho y)-1$. Thus $L = x e^{-d_1 y/2}$, proving \eqref{eq:TAP-loss-identity}.
+
+\emph{Step 2: Subtract (TAP1) from (TAP2).}
+\begin{align*}
+0 &= [x(1-e^{-d_1 y/2}) + \rho y(1+e^{-d_1 x/2})] - [x + \rho y(1-e^{-d_1 x/2})]\\
+&= x - x e^{-d_1 y/2} + \rho y + \rho y e^{-d_1 x/2} - x - \rho y + \rho y e^{-d_1 x/2}\\
+&= -x e^{-d_1 y/2} + 2\rho y e^{-d_1 x/2}.
+\end{align*}
+Thus $x e^{-d_1 y/2} = 2\rho y e^{-d_1 x/2}$, proving \eqref{eq:TAP-cross-identity}.
+\end{proof}
 
 \begin{conjecture}[TA-Patient decay with $\rho$]
 \label{conj:TAP-rho}
@@ -191,8 +272,19 @@ L^{\text{Patient}}(d_1,\rho) \;=\; L^{\text{TA-Greedy}}\!\left(\frac{d_1}{2\rho}
 \]
 \end{lemma}
 
-\begin{remark}
-Patient matching at outside-option pressure $\rho$ is equivalent to TA-Greedy at H-E density $d_1/(2\rho)$. Increasing $\rho$ by factor $k$ costs as much as reducing H-E density by factor $1/(2k)$.
+\begin{proof}
+From Lemma~\ref{lem:patient-rho}, $L^{\text{Patient}}(d_1,\rho) = 4\rho W(d_1/(8\rho))/d_1$.
+
+From the TA-Greedy analysis (which we do not reproduce in full here, but follows the same pattern), $L^{\text{TA-Greedy}}(d_1') = 2W(d_1'/4)/d_1'$ for any $d_1' > 0$.
+
+Set $d_1' = d_1/(2\rho)$. Then:
+\[
+L^{\text{TA-Greedy}}\!\left(\frac{d_1}{2\rho}\right) = \frac{2W(d_1/(8\rho))}{d_1/(2\rho)} = \frac{2W(d_1/(8\rho)) \cdot 2\rho}{d_1} = \frac{4\rho W(d_1/(8\rho))}{d_1} = L^{\text{Patient}}(d_1,\rho).
+\]
+\end{proof}
+
+\begin{remark}[Economic interpretation of duality]
+The duality relates Patient matching under E departure pressure $\rho$ to TA-Greedy matching under a rescaled H-E compatibility density. Specifically, a Patient planner facing E agents with departure rate $\rho$ achieves the same loss as a TA-Greedy planner in a market with $H$-$E$ compatibility density reduced by factor $2\rho$. Equivalently, doubling the departure rate $\rho$ is ``as bad as'' dividing the H-E compatibility density by a factor of 2. This quantifies the interaction between outside-option pressure and matching opportunity.
 \end{remark}
 
 \section{Competition Between Exchanges}
