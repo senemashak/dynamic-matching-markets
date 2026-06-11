@@ -43,7 +43,7 @@ easy-to-match (E) agents to face outside-option pressure: E agents become
 critical (depart) at rate $\rho \ge 1$ rather than rate 1.  This models
 altruistic donors or versatile workers who can exit the market when attractive
 alternatives appear elsewhere.  We derive closed-form loss functions for all
-four canonical policies (Greedy, Patient, Type-Aware Greedy, Type-Aware
+four policies (Greedy, Patient, Type-Aware Greedy, Type-Aware
 Patient) as functions of $\rho$ and $d_1$ (H-E compatibility density),
 revealing a fundamental asymmetry: \textbf{Patient-type policies are directly
 exposed to outside-option pressure while Greedy-type policies are not, at
@@ -55,8 +55,7 @@ yielding the duality $L^{\text{Patient}}(d_1,\rho)=L^{\text{TA-Greedy}}(d_1/(2\r
 For TA-Patient the exponential decay rate becomes $e^{-d_1/(4(1+\rho))}$:
 stronger outside options compress the exponential advantage.  We analyze
 competition between platforms, showing private exchanges can dominate a
-public monopoly when markets are thick enough.  These findings speak to the
-empirical debate over kidney-exchange consolidation.
+public monopoly when markets are thick enough.  These findings build on the kidney-exchange literature defining easy and hard-to-match types. 
 \end{abstract}
 
 \tableofcontents
@@ -75,8 +74,7 @@ emphasized gains from thicker markets: pooling more agents raises match
 rates, especially for hard-to-match types.  Yet fragmentation persists and
 in some cases improves outcomes.
 
-This paper identifies a mechanism for why: when easy-to-match agents---altruistic
-donors, bridge donors, versatile workers---face outside options that cause
+This paper identifies a mechanism for why: when easy-to-match agents face outside options that cause
 them to leave the market, the key design variable is not pool size alone but
 how quickly the market captures value from E agents before they exit.  A
 platform that credibly reduces easy agents' effective departure rate (through
@@ -608,7 +606,7 @@ For moderate $d_1$, welfare depends on a threshold
 $d_1^*(\rho_0,\rho_B,\alpha)$.
 \end{proposition}
 
-\begin{remark}[Empirical context]
+\begin{remark}
 In the US kidney exchange system, the NKR (daily), the Alliance for Paired
 Kidney Donation (daily or on new-entry), and the OPTN clearinghouse (weekly)
 operate at different clearing frequencies, which correspond to different
@@ -644,15 +642,14 @@ rankings flip in $\rho$ is an open numerical question.
 \paragraph{Formal competition model.}
 The two-platform welfare comparison relies on the effective-rate
 approximation~\eqref{eq:eff-rho}, which treats the composite system as a
-single pool with blended E departure rate.  A rigorous treatment would model
-the joint Markov chain on $(H_t^A,E_t^A,H_t^B,E_t^B)$ and derive the coupled
+single pool with blended E departure rate.  Future directions include modeling
+the joint Markov chain on $(H_t^A,E_t^A,H_t^B,E_t^B)$ and deriving the coupled
 mean-field fixed-point equations.
 
 \paragraph{Stationary concentration.}
 The mean-field approach requires the stationary distribution of the CTMC to
 concentrate near the fixed point $(x^*,y^*)$.  This is supported numerically
-by occupancy heatmaps that show tight mass near $(h^*,e^*)$, and is an
-extension of the concentration arguments in the baseline AKL paper.
+by occupancy heatmaps that show tight mass near $(h^*,e^*)$.
 
 %----------------------------------------------------------------------
 \section{Conclusion}
@@ -667,7 +664,7 @@ translates it into a concrete equivalence: a unit increase in $\log\rho$ is
 as damaging to Patient performance as a factor-$2\rho$ decrease in H-E
 compatibility density.
 
-For TA-Patient---the exponentially superior policy---higher $\rho$ compresses
+For TA-Patient, the best-performing algorithm, higher $\rho$ compresses
 the decay exponent from $d_1/8$ (at $\rho=1$) to $d_1/(4(1+\rho))$.  A
 platform that retains E agents gains exponentially in thick markets.  The
 competition model shows that fragmentation is not uniformly harmful: a
